@@ -4,25 +4,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Masuk — UNAIR Identity Exposure Dashboard</title>
-  <link rel="stylesheet" href="{% static 'exposures/css/dashboard.css' %}?v=20260709-light">
+  <title>Masuk - UNAIR Identity Exposure Dashboard</title>
+  <link rel="icon" type="image/png" href="{% static 'exposures/img/unair-favicon.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'exposures/img/unair-favicon.png' %}">
+  <link rel="stylesheet" href="{% static 'exposures/css/dashboard.css' %}?v=20260709-light-v5">
 </head>
 <body class="login-screen">
-  <main class="login-panel">
-    <img src="{% static 'exposures/img/unair-logo.png' %}" alt="Universitas Airlangga">
-    <h1>Identity Exposure Intelligence Dashboard</h1>
-    <p class="login-subtitle">Masuk untuk mengakses dashboard pemantauan paparan identitas digital Universitas Airlangga.</p>
-    <form method="post">
-      {% csrf_token %}
-      {% if form.errors %}
-        <div class="login-errors">Kredensial salah. Silakan periksa kembali username dan password Anda.</div>
-      {% endif %}
-      <label for="{{ form.username.id_for_label }}">Username</label>
-      {{ form.username }}
-      <label for="{{ form.password.id_for_label }}">Password</label>
-      {{ form.password }}
-      <button type="submit">Masuk</button>
-    </form>
+  <main class="login-shell">
+    <section class="login-brand-stage" aria-label="Universitas Airlangga Identity Exposure">
+      <div class="login-brand-nav">
+        <img src="{% static 'exposures/img/unair-branding-light.png' %}" alt="Logo Universitas Airlangga">
+        <span>Universitas Airlangga</span>
+      </div>
+      <div class="login-smart-word">SMART</div>
+      <div class="login-brand-copy">
+        <span class="eyebrow">Internal Security Monitoring</span>
+        <h1>Identity Exposure Intelligence Dashboard</h1>
+        <p>Platform pemantauan paparan identitas digital UNAIR untuk membantu validasi, prioritas risiko, dan tindak lanjut keamanan akun.</p>
+        <div class="login-feature-row">
+          <span>Domain Monitoring</span>
+          <span>Risk Prioritization</span>
+          <span>Safe Evidence</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="login-panel" aria-label="Form masuk dashboard">
+      <img class="login-panel-logo" src="{% static 'exposures/img/unair-branding-light.png' %}" alt="Logo Universitas Airlangga">
+      <span class="eyebrow">Authorized Access</span>
+      <h2>Masuk ke Dashboard</h2>
+      <p class="login-subtitle">Gunakan akun yang terotorisasi untuk mengakses data exposure yang sudah dimasking.</p>
+      <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+          <div class="login-errors">Kredensial salah. Silakan periksa kembali username dan password Anda.</div>
+        {% endif %}
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        <label for="{{ form.password.id_for_label }}">Password</label>
+        {{ form.password }}
+        <button type="submit">Masuk ke Sistem</button>
+      </form>
+      <div class="login-note">Internal use only - data sensitif tidak ditampilkan secara mentah.</div>
+    </section>
   </main>
 </body>
 </html>

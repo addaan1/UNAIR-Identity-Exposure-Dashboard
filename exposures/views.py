@@ -3,7 +3,7 @@ from collections import Counter, defaultdict
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Avg, Count, Max, Q
+from django.db.models import Avg, Count, Max, Prefetch, Q
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -140,6 +140,14 @@ def identity_exposure(request):
     account_type_filter = active_filters.get("account_type", "")
     if account_type_filter:
         profiles = profiles.filter(account_type=account_type_filter)
+    profiles = profiles.prefetch_related(
+        Prefetch(
+            "raw_exposures",
+            queryset=RawExposure.objects.select_related(
+                "risk_score", "remediation", "identity_profile", "domain_asset"
+            ).order_by("-risk_score__score", "-observed_at"),
+        )
+    )
     write_audit(request, "view_identity_exposure", metadata=active_filters)
     return render(
         request,

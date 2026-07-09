@@ -283,7 +283,22 @@ async function renderAllCharts() {
   }
 }
 
+function initIncidentDrilldown() {
+  const buttons = document.querySelectorAll('.incident-toggle[data-target]');
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const target = document.getElementById(button.dataset.target);
+      if (!target) return;
+      const willOpen = target.hasAttribute('hidden');
+      target.toggleAttribute('hidden', !willOpen);
+      button.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      button.textContent = willOpen ? 'Tutup insiden' : 'Lihat insiden';
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initSidebar();
+  initIncidentDrilldown();
   renderAllCharts();
 });

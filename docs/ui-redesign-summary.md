@@ -1,39 +1,32 @@
 # UI Redesign Summary
 
-Tanggal revisi: 9 Juli 2026
+## Revision: Light Institutional UI v2
 
-## Fokus Perubahan
+Perubahan tambahan yang dilakukan pada revisi ini:
 
-Dashboard direvisi dari tampilan gelap/cyber-neon menjadi tampilan light mode yang lebih institusional, bersih, dan sesuai dengan konteks Universitas Airlangga.
+1. **Logo dan identitas UNAIR diperkuat**
+   - Menambahkan `unair-crest.png` untuk logo sidebar dan login.
+   - Menambahkan `unair-favicon.png` agar tab browser memakai ikon UNAIR.
+   - Sidebar brand dibuat lebih besar dan lebih jelas, bukan lagi logo kecil di dalam kotak putih.
 
-## Perubahan Utama
+2. **Topbar user session diperbaiki**
+   - Tombol `analyst_demo · Keluar` diganti menjadi kartu profil kecil dengan avatar inisial pengguna.
+   - Tombol keluar dibuat ikon terpisah agar lebih rapi.
 
-- Mengubah tema utama menjadi light mode dengan warna UNAIR blue dan UNAIR gold.
-- Menambahkan collapsible sidebar dengan penyimpanan preferensi melalui localStorage.
-- Merapikan topbar, KPI cards, chart cards, filter bar, tabel, login page, dan remediation cards.
-- Menghapus inline style yang terlalu banyak pada template utama agar desain lebih konsisten.
-- Menambahkan menu sidebar yang lebih terstruktur: Overview, Intelligence, dan Response.
-- Menambahkan halaman High Risk ke sidebar agar temuan prioritas mudah diakses.
-- Menyesuaikan palette Chart.js agar lebih terbaca di light mode.
-- Memperbaiki bug tampilan risk score dari `numeric_score` menjadi `score`.
-- Memperbaiki empty-state table colspan pada halaman Identity dan High Risk.
-- Memperbaiki field waktu di tabel overview dari `discovered_at` menjadi `observed_at`.
+3. **Login page dibuat lebih bold dan sesuai gaya UNAIR**
+   - Login sekarang memakai komposisi biru-kuning, headline besar, dan layout dua kolom.
+   - Ditambahkan pesan internal access dan safe evidence agar konteks keamanan lebih jelas.
 
-## File Utama yang Diubah
+4. **Profil identitas memiliki incident drill-down**
+   - Kolom jumlah insiden sekarang memiliki tombol `Lihat insiden`.
+   - Setiap profil bisa dibuka untuk melihat domain, waktu observasi, jenis exposure, evidence yang dimasking, faktor risiko, skor risiko, dan link ke halaman tindak lanjut.
+   - Fitur ini membantu analis memahami bagian mana yang menjadi sumber paparan, bukan hanya melihat angka total.
 
-- `templates/base.html`
-- `templates/exposures/overview.html`
-- `templates/exposures/domain_risk.html`
-- `templates/exposures/identity_exposure.html`
-- `templates/exposures/high_risk.html`
-- `templates/exposures/remediation.html`
-- `templates/registration/login.html`
-- `static/exposures/css/dashboard.css`
-- `static/exposures/js/dashboard.js`
-- `README.md`
+5. **Halaman tindak lanjut dibuat lebih impactful**
+   - Ditambahkan remediation playbook: Critical, High, dan Evidence.
+   - Ditambahkan value panel yang menjelaskan nilai dashboard untuk prioritas akun, validasi unit, audit penanganan, dan mitigasi spesifik.
+   - Setiap antrean tindak lanjut sekarang menampilkan rekomendasi tindakan berdasarkan jenis exposure: token, cookie/session, password, atau identifier saja.
 
-## Validasi
-
-- `python manage.py check` berhasil tanpa issue.
-- `python manage.py test` berhasil: 8 tests OK.
-- Render check untuk halaman `/`, `/domains/`, `/identities/`, `/high-risk/`, dan `/remediation/` berhasil dengan status HTTP 200 menggunakan Django test client.
+6. **Validasi teknis**
+   - Project tetap mempertahankan Django view dan business logic utama.
+   - Perubahan fokus pada UI, navigasi, traceability insiden, dan tampilan tindak lanjut.

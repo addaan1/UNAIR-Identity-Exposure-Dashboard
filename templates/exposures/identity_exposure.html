@@ -22,17 +22,27 @@
   </form>
 </section>
 
+<section class="identity-briefing panel panel-highlight">
+  <div>
+    <span class="eyebrow">Identity Traceability</span>
+    <h2>Jumlah insiden dapat dibuka untuk melihat rincian paparan</h2>
+    <p>
+      Klik tombol <strong>Lihat insiden</strong> pada setiap profil untuk melihat domain, waktu deteksi, jenis exposure, faktor risiko, evidence yang sudah dimasking, dan rekomendasi tindak lanjut. Dengan begitu, analis tidak hanya melihat total insiden, tetapi juga tahu bagian mana yang perlu divalidasi.
+    </p>
+  </div>
+</section>
+
 <section class="panel">
   <div class="section-heading">
     <div>
       <span class="eyebrow">Identity Profiling</span>
       <h2>Profil Sivitas yang Membutuhkan Validasi</h2>
-      <p>Profil dibuat dari hasil pencocokan data exposure dengan indikator identitas yang tersedia.</p>
+      <p>Profil dibuat dari pencocokan data exposure dengan indikator identitas yang tersedia. Detail insiden tetap dimasking agar aman untuk proses review.</p>
     </div>
   </div>
 
-  <div class="table-wrap">
-    <table>
+  <div class="table-wrap identity-table-wrap">
+    <table class="identity-table">
       <thead>
         <tr>
           <th>Nama Lengkap</th>
@@ -55,7 +65,14 @@
             <td><span class="pill info">{{ profile.get_account_type_display }}</span></td>
             <td>{{ profile.unit_name }}</td>
             <td><strong class="text-strong">{{ profile.confidence_score }}%</strong></td>
-            <td><strong class="text-strong">{{ profile.exposure_total }}</strong> temuan</td>
+            <td>
+              <div class="incident-count-cell">
+                <strong class="text-strong">{{ profile.exposure_total }}</strong> temuan
+                <button type="button" class="incident-toggle" data-target="incident-detail-{{ profile.id }}" aria-expanded="false">
+                  Lihat insiden
+                </button>
+              </div>
+            </td>
             <td>
               {% if profile.max_score >= 85 %}
                 <span class="pill critical">Critical · {{ profile.max_score|default:0 }}</span>
@@ -68,6 +85,81 @@
               {% endif %}
             </td>
             <td><span class="pill low">{{ profile.get_validation_status_display }}</span></td>
+          </tr>
+          <tr id="incident-detail-{{ profile.id }}" class="incident-detail-row" hidden>
+            <td colspan="9">
+              <div class="incident-detail-panel">
+                <div class="incident-detail-header">
+                  <div>
+                    <span class="eyebrow">Incident Breakdown</span>
+                    <h3>{{ profile.full_name }} · {{ profile.masked_email|default:profile.masked_username }}</h3>
+                    <p>Rincian ini membantu analis melihat lokasi paparan dan tindakan yang perlu diprioritaskan.</p>
+                  </div>
+                  <span class="pill info">{{ profile.exposure_total }} insiden</span>
+                </div>
+
+                <div class="incident-list">
+                  {% for exposure in profile.raw_exposures.all %}
+                    <article class="incident-card">
+                      <div class="incident-card-top">
+                        <div>
+                          <strong>{{ exposure.normalized_domain }}</strong>
+                          <span class="table-subtitle mono">{{ exposure.source_id }} · {{ exposure.observed_at|date:"d M Y, H:i" }}</span>
+                        </div>
+                        {% if exposure.risk_score.level == 'critical' %}
+                          <span class="pill critical">Critical · {{ exposure.risk_score.score }}</span>
+                        {% elif exposure.risk_score.level == 'high' %}
+                          <span class="pill high">High · {{ exposure.risk_score.score }}</span>
+                        {% elif exposure.risk_score.level == 'medium' %}
+                          <span class="pill medium">Medium · {{ exposure.risk_score.score }}</span>
+                        {% else %}
+                          <span class="pill low">Low · {{ exposure.risk_score.score|default:0 }}</span>
+                        {% endif %}
+                      </div>
+
+                      <div class="incident-meta-grid">
+                        <div>
+                          <span>Jenis exposure</span>
+                          <strong>
+                            {% for exposure_type in exposure.exposure_types %}
+                              <em class="mini-tag">{{ exposure_type }}</em>
+                            {% empty %}
+                              <em class="mini-tag muted">unknown</em>
+                            {% endfor %}
+                          </strong>
+                        </div>
+                        <div>
+                          <span>Unit terindikasi</span>
+                          <strong>{{ exposure.identity_profile.unit_name|default:exposure.unit_hint|default:"Unknown" }}</strong>
+                        </div>
+                        <div>
+                          <span>Status tindak lanjut</span>
+                          <strong>{{ exposure.remediation.get_status_display|default:"Belum Ditangani" }}</strong>
+                        </div>
+                      </div>
+
+                      <div class="safe-evidence-box">
+                        <span>Evidence aman</span>
+                        <p>{{ exposure.masked_evidence|default:"Evidence mentah tidak ditampilkan pada dashboard." }}</p>
+                      </div>
+
+                      <div class="incident-footer">
+                        <div class="risk-factor-list">
+                          {% for factor in exposure.risk_score.factors %}
+                            <span class="pill info">{{ factor }}</span>
+                          {% empty %}
+                            <span class="text-muted">Tidak ada faktor risiko tambahan.</span>
+                          {% endfor %}
+                        </div>
+                        <a class="btn-action btn-outline" href="{% url 'remediation' %}?q={{ exposure.normalized_domain }}">Buka tindak lanjut</a>
+                      </div>
+                    </article>
+                  {% empty %}
+                    <div class="empty-state">Belum ada rincian insiden untuk profil ini.</div>
+                  {% endfor %}
+                </div>
+              </div>
+            </td>
           </tr>
         {% empty %}
           <tr><td colspan="9" class="empty-state">Tidak ada profil identitas yang sesuai filter.</td></tr>

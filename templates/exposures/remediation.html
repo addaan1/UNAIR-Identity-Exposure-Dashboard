@@ -17,30 +17,58 @@
     </div>
   </div>
 
-  <div class="chart-card">
+  <div class="chart-card remediation-impact-card">
     <div class="chart-header">
       <div>
-        <span class="eyebrow">Incident Response Guide</span>
-        <h3>Target Penanganan dan Tindak Lanjut</h3>
-        <p class="chart-subtitle">Setiap temuan perlu melalui verifikasi, pemberitahuan unit, reset kredensial bila diperlukan, serta pencatatan status penanganan.</p>
+        <span class="eyebrow">Remediation Playbook</span>
+        <h3>Tindak Lanjut yang Lebih Operasional</h3>
+        <p class="chart-subtitle">Dashboard tidak hanya menampilkan insiden, tetapi juga memberi arahan tindakan berdasarkan jenis exposure dan tingkat risikonya.</p>
       </div>
     </div>
-    <div class="sla-grid">
-      <div class="sla-card">
-        <span>Critical</span>
-        <strong>&lt; 24 Jam</strong>
-        <small>Reset dan cabut sesi aktif</small>
+    <div class="playbook-grid">
+      <div class="playbook-item critical-step">
+        <span>01</span>
+        <strong>Critical</strong>
+        <p>Reset kredensial, cabut sesi aktif, dan review aktivitas login dalam &lt; 24 jam.</p>
       </div>
-      <div class="sla-card">
-        <span>High Risk</span>
-        <strong>48 Jam</strong>
-        <small>Verifikasi dan notifikasi unit</small>
+      <div class="playbook-item high-step">
+        <span>02</span>
+        <strong>High</strong>
+        <p>Validasi identitas, notifikasi unit, dan edukasi keamanan perangkat dalam 48 jam.</p>
       </div>
-      <div class="sla-card">
-        <span>Audit Target</span>
-        <strong>100%</strong>
-        <small>Semua tindakan tercatat</small>
+      <div class="playbook-item evidence-step">
+        <span>03</span>
+        <strong>Evidence</strong>
+        <p>Catat evidence yang sudah dimasking, status tindak lanjut, pemilik, dan tanggal update.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel response-value-panel">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">Actionable Response</span>
+      <h2>Nilai Tambah Dashboard untuk Tim Keamanan</h2>
+      <p>Setiap temuan diarahkan menjadi pekerjaan yang jelas: siapa yang perlu divalidasi, sistem mana yang terdampak, dan tindakan apa yang perlu dilakukan terlebih dahulu.</p>
+    </div>
+  </div>
+  <div class="response-value-grid">
+    <div>
+      <strong>Prioritas akun</strong>
+      <span>Mengurutkan akun berdasarkan skor risiko dan jenis data yang terpapar.</span>
+    </div>
+    <div>
+      <strong>Validasi unit</strong>
+      <span>Membantu menentukan fakultas/unit yang perlu dihubungi untuk verifikasi.</span>
+    </div>
+    <div>
+      <strong>Audit penanganan</strong>
+      <span>Mencatat status, catatan, dan update agar tindak lanjut tidak hilang.</span>
+    </div>
+    <div>
+      <strong>Mitigasi spesifik</strong>
+      <span>Memberi saran berbeda untuk password, cookie/session, token, atau identitas saja.</span>
     </div>
   </div>
 </section>
@@ -89,6 +117,17 @@
               <span class="mono">({{ action.exposure.identity_profile.nim_nip }})</span><br>
               Email/Username: <strong>{{ action.exposure.email_masked|default:action.exposure.username_masked }}</strong>
               <span class="text-muted">· Terdeteksi {{ action.exposure.observed_at|date:"d M Y" }}</span>
+            </div>
+            <div class="remediation-advice">
+              {% if action.exposure.token_present %}
+                <strong>Rekomendasi:</strong> cabut atau rotasi token/API key, review akses aplikasi, dan cek log penggunaan token.
+              {% elif action.exposure.cookie_present %}
+                <strong>Rekomendasi:</strong> paksa logout semua sesi, reset kata sandi, dan aktifkan validasi perangkat.
+              {% elif action.exposure.password_present %}
+                <strong>Rekomendasi:</strong> reset kata sandi, cek penggunaan ulang password, dan dorong aktivasi autentikasi berlapis.
+              {% else %}
+                <strong>Rekomendasi:</strong> validasi kepemilikan akun dan lakukan edukasi cyber hygiene pada unit terkait.
+              {% endif %}
             </div>
           </div>
         </div>
