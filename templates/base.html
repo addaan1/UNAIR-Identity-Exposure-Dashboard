@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}UNAIR Identity Exposure Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'exposures/css/dashboard.css' %}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-lockup">
+        <img src="{% static 'exposures/img/unair-logo.png' %}" alt="Universitas Airlangga">
+        <span>Identity Exposure</span>
+      </div>
+      <nav class="sidebar-nav" aria-label="Primary navigation">
+        <a href="{% url 'overview' %}">Overview</a>
+      </nav>
+    </aside>
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Universitas Airlangga</p>
+          <h1>{% block page_title %}Exposure Intelligence{% endblock %}</h1>
+        </div>
+        {% if request.user.is_authenticated %}
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="ghost-button" type="submit">Logout</button>
+          </form>
+        {% endif %}
+      </header>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

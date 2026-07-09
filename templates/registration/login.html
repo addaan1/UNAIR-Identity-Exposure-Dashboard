@@ -1,0 +1,25 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - UNAIR Identity Exposure</title>
+  <link rel="stylesheet" href="{% static 'exposures/css/dashboard.css' %}">
+</head>
+<body class="login-screen">
+  <main class="login-panel">
+    <img src="{% static 'exposures/img/unair-logo.png' %}" alt="Universitas Airlangga">
+    <h1>Identity Exposure Intelligence</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <label for="{{ form.username.id_for_label }}">Username</label>
+      {{ form.username }}
+      <label for="{{ form.password.id_for_label }}">Password</label>
+      {{ form.password }}
+      <button type="submit">Login</button>
+    </form>
+  </main>
+</body>
+</html>
