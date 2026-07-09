@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 
-{% block page_title %}Temuan Risiko Tinggi & Kritis SOC{% endblock %}
+{% block page_title %}Temuan Risiko Tinggi dan Kritikal{% endblock %}
 
 {% block content %}
-<!-- ═══════ FILTER BAR ═══════ -->
 <section class="filter-bar">
   <form method="get">
     <input type="search" name="q" value="{{ filters.q }}" placeholder="Cari sumber, domain, email, atau unit...">
@@ -23,12 +22,12 @@
   </form>
 </section>
 
-<!-- ═══════ HIGH RISK INCIDENTS TABLE ═══════ -->
 <section class="panel">
   <div class="section-heading">
     <div>
-      <span class="eyebrow" style="color: #EF4444;">CRITICAL EXPOSURE LOG</span>
-      <h2>Daftar Insiden Diurutkan Berdasarkan Keparahan</h2>
+      <span class="eyebrow">Priority Exposure Log</span>
+      <h2>Daftar Insiden Berdasarkan Keparahan</h2>
+      <p>Urutan prioritas ditentukan dari risk score, level risiko, dan waktu observasi.</p>
     </div>
   </div>
 
@@ -38,56 +37,48 @@
         <tr>
           <th>ID Sumber</th>
           <th>Waktu Observasi</th>
-          <th>Domain Terdampak</th>
-          <th>Nama Lengkap & NIM/NIP</th>
+          <th>Domain</th>
+          <th>Identitas</th>
           <th>Email / Username</th>
-          <th>Skor & Keparahan</th>
-          <th>Faktor Risiko Intelijen</th>
+          <th>Skor & Level</th>
+          <th>Faktor Risiko</th>
           <th>Status Penanganan</th>
         </tr>
       </thead>
       <tbody>
         {% for exposure in exposures %}
           <tr>
+            <td><span class="mono text-strong">{{ exposure.source_id }}</span></td>
+            <td><span class="text-muted">{{ exposure.observed_at|date:"d M Y, H:i" }}</span></td>
+            <td><strong class="text-blue">{{ exposure.normalized_domain }}</strong></td>
             <td>
-              <strong style="color: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ exposure.source_id }}</strong>
+              <div class="table-title">{{ exposure.identity_profile.full_name }}</div>
+              <div class="table-subtitle mono">{{ exposure.identity_profile.nim_nip }}</div>
             </td>
             <td>
-              <span style="color: var(--text-secondary);">{{ exposure.observed_at|date:"d M Y, H:i" }}</span>
-            </td>
-            <td>
-              <strong style="color: var(--cyber-cyan);">{{ exposure.normalized_domain }}</strong>
-            </td>
-            <td>
-              <strong style="color: #FFFFFF; font-size: 14px;">{{ exposure.identity_profile.full_name }}</strong>
-              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--unair-gold); margin-top: 2px;">{{ exposure.identity_profile.nim_nip }}</div>
-            </td>
-            <td>
-              <span style="color: var(--text-primary); font-size: 13.5px;">{{ exposure.email_masked|default:exposure.username_masked }}</span>
-              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px;">{{ exposure.identity_profile.get_account_type_display }} / {{ exposure.identity_profile.unit_name|default:"UNAIR Central" }}</div>
+              <div class="text-strong">{{ exposure.email_masked|default:exposure.username_masked }}</div>
+              <div class="table-subtitle">{{ exposure.identity_profile.get_account_type_display }} · {{ exposure.identity_profile.unit_name|default:"UNAIR Central" }}</div>
             </td>
             <td>
               {% if exposure.risk_score.level == 'critical' %}
-                <span class="pill critical">● CRITICAL ({{ exposure.risk_score.numeric_score }})</span>
+                <span class="pill critical">Critical · {{ exposure.risk_score.score }}</span>
               {% elif exposure.risk_score.level == 'high' %}
-                <span class="pill high">● HIGH ({{ exposure.risk_score.numeric_score }})</span>
+                <span class="pill high">High · {{ exposure.risk_score.score }}</span>
               {% else %}
-                <span class="pill medium">● {{ exposure.risk_score.level|upper }}</span>
+                <span class="pill medium">{{ exposure.risk_score.level|capfirst }} · {{ exposure.risk_score.score }}</span>
               {% endif %}
             </td>
             <td>
-              <div style="display: flex; flex-wrap: wrap; gap: 4px;">
-                {% for factor in exposure.risk_score.factors %}
-                  <span class="pill info" style="font-size: 11px;">{{ factor }}</span>
-                {% endfor %}
-              </div>
+              {% for factor in exposure.risk_score.factors %}
+                <span class="pill info">{{ factor }}</span>
+              {% empty %}
+                <span class="text-muted">Tidak ada faktor tambahan.</span>
+              {% endfor %}
             </td>
-            <td>
-              <span class="pill low">{{ exposure.remediation.get_status_display|default:"Belum Ditangani" }}</span>
-            </td>
+            <td><span class="pill low">{{ exposure.remediation.get_status_display|default:"Belum Ditangani" }}</span></td>
           </tr>
         {% empty %}
-          <tr><td colspan="7" style="text-align:center; padding: 40px; color:var(--text-secondary);">Tidak ada temuan risiko tinggi yang sesuai filter.</td></tr>
+          <tr><td colspan="8" class="empty-state">Tidak ada temuan risiko tinggi yang sesuai filter.</td></tr>
         {% endfor %}
       </tbody>
     </table>

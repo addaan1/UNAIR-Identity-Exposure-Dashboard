@@ -4,47 +4,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="UNAIR Identity Exposure Intelligence Dashboard — Pemantauan, klasifikasi, dan mitigasi kebocoran kredensial siber Universitas Airlangga.">
-  <title>{% block title %}UNAIR Identity Cyber Intelligence Command Center{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'exposures/css/dashboard.css' %}?v=20260709c">
+  <meta name="description" content="Dashboard pemantauan paparan identitas digital Universitas Airlangga untuk validasi, prioritas risiko, dan tindak lanjut keamanan akun.">
+  <title>{% block title %}UNAIR Identity Exposure Intelligence Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'exposures/css/dashboard.css' %}?v=20260709-light">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
-  <script defer src="{% static 'exposures/js/dashboard.js' %}?v=20260709c"></script>
-  <style>
-    /* STRICT CHART SIZING CONTROL — GUARANTEED NO OVERSIZED PLOTS */
-    .chart-container {
-      position: relative !important;
-      display: block !important;
-      width: 100% !important;
-      height: 220px !important;
-      max-height: 220px !important;
-      overflow: hidden !important;
-    }
-    .chart-container.compact {
-      height: 200px !important;
-      max-height: 200px !important;
-    }
-    .chart-container.doughnut-wrap {
-      height: 200px !important;
-      max-height: 200px !important;
-      max-width: 320px !important;
-      margin: 0 auto !important;
-    }
-    .chart-container canvas {
-      display: block !important;
-      width: 100% !important;
-      height: 100% !important;
-      max-height: 220px !important;
-    }
-    .chart-container.compact canvas,
-    .chart-container.doughnut-wrap canvas {
-      max-height: 200px !important;
-    }
-  </style>
+  <script defer src="{% static 'exposures/js/dashboard.js' %}?v=20260709-light"></script>
 </head>
 <body>
   <div class="app-shell">
-    <!-- ═══════ SIDEBAR NAVIGATION ═══════ -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="appSidebar" aria-label="Navigasi Utama">
       <div class="brand-lockup">
         <img src="{% static 'exposures/img/unair-logo.png' %}" alt="Universitas Airlangga">
         <div class="brand-text">
@@ -53,50 +21,92 @@
         </div>
       </div>
 
-      <nav class="sidebar-nav" aria-label="Navigasi Utama">
-        <a href="{% url 'overview' %}" {% if request.resolver_match.url_name == 'overview' %}class="active"{% endif %}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          Executive Dashboard
-        </a>
-        <a href="{% url 'domain_risk' %}" {% if request.resolver_match.url_name == 'domain_risk' %}class="active"{% endif %}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Intelijen Domain
-        </a>
-        <a href="{% url 'identity_exposure' %}" {% if request.resolver_match.url_name == 'identity_exposure' %}class="active"{% endif %}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Profil Identitas
-        </a>
-        <a href="{% url 'remediation' %}" {% if request.resolver_match.url_name == 'remediation' %}class="active"{% endif %}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          Tindak Lanjut
-        </a>
+      <nav class="sidebar-nav">
+        <div class="nav-group">
+          <p class="nav-label">Overview</p>
+          <a href="{% url 'overview' %}" class="nav-link {% if request.resolver_match.url_name == 'overview' %}active{% endif %}" title="Executive Dashboard">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </span>
+            <span class="nav-text">Executive Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-group">
+          <p class="nav-label">Intelligence</p>
+          <a href="{% url 'domain_risk' %}" class="nav-link {% if request.resolver_match.url_name == 'domain_risk' %}active{% endif %}" title="Domain Risk">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </span>
+            <span class="nav-text">Domain Risk</span>
+          </a>
+          <a href="{% url 'identity_exposure' %}" class="nav-link {% if request.resolver_match.url_name == 'identity_exposure' %}active{% endif %}" title="Profil Identitas">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <span class="nav-text">Profil Identitas</span>
+          </a>
+          <a href="{% url 'high_risk' %}" class="nav-link {% if request.resolver_match.url_name == 'high_risk' %}active{% endif %}" title="Temuan Prioritas">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </span>
+            <span class="nav-text">Temuan Prioritas</span>
+          </a>
+        </div>
+
+        <div class="nav-group">
+          <p class="nav-label">Response</p>
+          <a href="{% url 'remediation' %}" class="nav-link {% if request.resolver_match.url_name == 'remediation' %}active{% endif %}" title="Tindak Lanjut">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </span>
+            <span class="nav-text">Tindak Lanjut</span>
+          </a>
+          <a href="{% url 'export_exposures_csv' %}" class="nav-link" title="Export CSV">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </span>
+            <span class="nav-text">Export Laporan</span>
+          </a>
+        </div>
       </nav>
+
+      <div class="sidebar-footer">
+        <span>Internal Use Only</span>
+        <strong>Universitas Airlangga</strong>
+      </div>
     </aside>
 
-    <!-- ═══════ MAIN WORKSPACE ═══════ -->
     <main class="workspace">
       <header class="topbar">
         <div class="topbar-left">
-          <p class="eyebrow">UNIVERSITAS AIRLANGGA — IDENTITY EXPOSURE DASHBOARD</p>
-          <h1>{% block page_title %}Executive Cyber Dashboard{% endblock %}</h1>
+          <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Buka tutup sidebar" aria-controls="appSidebar">
+            <span></span><span></span><span></span>
+          </button>
+          <div>
+            <p class="eyebrow">Universitas Airlangga · Identity Exposure Intelligence</p>
+            <h1>{% block page_title %}Executive Dashboard{% endblock %}</h1>
+          </div>
         </div>
         <div class="topbar-actions">
-          <a class="btn-action" href="{% url 'export_exposures_csv' %}">
-            Unduh Laporan CSV
-          </a>
+          <div class="sync-box">
+            <span>Last Sync</span>
+            <strong>{% if last_sync %}{{ last_sync|date:"d M Y, H:i" }}{% else %}Aktif{% endif %}</strong>
+          </div>
+          <a class="btn-action btn-outline" href="{% url 'export_exposures_csv' %}">Unduh CSV</a>
           {% if request.user.is_authenticated %}
-            <form method="post" action="{% url 'logout' %}">
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
               {% csrf_token %}
-              <button class="btn-action" type="submit">Sesi: {{ request.user.username }} (Keluar)</button>
+              <button class="btn-action btn-primary" type="submit">{{ request.user.username }} · Keluar</button>
             </form>
           {% endif %}
         </div>
       </header>
 
       {% if messages %}
-        <div class="messages" style="margin-bottom: 24px; padding: 14px 18px; border-radius: var(--radius-sm); background: rgba(255,197,11,0.15); border: 1px solid rgba(255,197,11,0.4);">
+        <div class="messages">
           {% for message in messages %}
-            <p style="margin:0; color:#FDE047; font-weight:600;">{{ message }}</p>
+            <p>{{ message }}</p>
           {% endfor %}
         </div>
       {% endif %}

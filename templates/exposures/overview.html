@@ -1,123 +1,121 @@
 {% extends "base.html" %}
 
-{% block page_title %}Executive Cyber Intelligence Dashboard{% endblock %}
+{% block page_title %}Executive Identity Exposure Dashboard{% endblock %}
 
 {% block content %}
-<!-- ═══════ SECURITY POSTURE HERO BANNER ═══════ -->
 <section class="security-hero">
   <div class="hero-content">
-    <span class="eyebrow" style="color: var(--unair-gold);">CYBERSECURITY EXECUTIVE COMMAND CENTER</span>
-    <h2>UNAIR Digital Identity & Credential Exposure Shield</h2>
-    <p>Pemantauan intelijen keamanan siber secara real-time untuk mendeteksi, mengklasifikasi, dan memitigasi kebocoran kredensial (stealer logs, forum gelap, & infostealer) pada ekosistem sivitas akademika Universitas Airlangga.</p>
+    <span class="eyebrow">Dashboard Pemantauan Identitas Digital UNAIR</span>
+    <h2>Identity Exposure Intelligence untuk Prioritas Mitigasi Akun</h2>
+    <p>
+      Dashboard ini membantu tim keamanan memantau paparan identitas digital yang berkaitan dengan domain Universitas Airlangga, mengelompokkan temuan berdasarkan risiko, serta menyiapkan tindak lanjut yang aman tanpa menampilkan kata sandi atau rahasia mentah.
+    </p>
     <div class="hero-badges">
-      <div class="hero-badge" style="border-color: var(--cyber-cyan);">
-        <span style="color: var(--cyber-cyan);">●</span> 15 Unit Fakultas Terpantau
-      </div>
-      <div class="hero-badge" style="border-color: var(--unair-gold);">
-        <span style="color: var(--unair-gold); font-weight: bold; margin-right: 4px;">SLA</span> SLA Remediasi Kritis &lt; 24 Jam
-      </div>
-      <div class="hero-badge" style="border-color: #10B981;">
-        <span style="color: #10B981; font-weight: bold; margin-right: 4px;">SEC</span> SSO &amp; MFA Shield Aktif
-      </div>
+      <span class="hero-badge"><span class="hero-dot"></span>Domain unair.ac.id terpantau</span>
+      <span class="hero-badge"><span class="hero-dot"></span>Data sensitif dimasking</span>
+      <span class="hero-badge"><span class="hero-dot"></span>Remediasi kritikal ditargetkan &lt; 24 jam</span>
     </div>
   </div>
   <div class="hero-score-box">
-    <div class="score-number">84<span style="font-size: 20px; color: var(--text-secondary);">/100</span></div>
-    <div class="score-label">Skor Keamanan Siber UNAIR</div>
-    <span class="pill low" style="margin-top: 8px;">A- · POSTUR PROTEKSI TINGGI</span>
+    <div class="score-number">84<span>/100</span></div>
+    <div class="score-label">Exposure Readiness Index</div>
+    <span class="pill info">Perlu Pemantauan Berkala</span>
   </div>
 </section>
 
-<!-- ═══════ KPI METRICS GRID (6 CARDS IN 3 COLUMNS) ═══════ -->
 <section class="kpi-grid">
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-label">Total Exposure</span>
-      <div class="metric-icon" style="color: var(--cyber-cyan);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       </div>
     </div>
     <div class="metric-value">{{ kpis.total_exposures }}</div>
-    <div class="metric-trend">
-      <span>Terverifikasi intelijen gelap</span>
-    </div>
+    <div class="metric-trend">Temuan yang sudah masuk ke sistem pemantauan.</div>
   </div>
 
   <div class="metric-card warning">
     <div class="metric-header">
-      <span class="metric-label">Identitas Unik Terdampak</span>
-      <div class="metric-icon" style="color: var(--unair-gold);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="metric-label">Identitas Unik</span>
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </div>
     </div>
     <div class="metric-value">{{ kpis.unique_identities }}</div>
-    <div class="metric-trend neutral">
-      <span>Dosen, Staf, &amp; Mahasiswa</span>
-    </div>
+    <div class="metric-trend">Akun mahasiswa, dosen, staf, atau pihak lain yang teridentifikasi.</div>
   </div>
 
   <div class="metric-card">
     <div class="metric-header">
-      <span class="metric-label">Subdomain Terpapar</span>
-      <div class="metric-icon" style="color: var(--cyber-cyan);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span class="metric-label">Domain Terdampak</span>
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       </div>
     </div>
     <div class="metric-value">{{ kpis.impacted_domains }}</div>
-    <div class="metric-trend">
-      <span>Ekosistem domain unair.ac.id</span>
-    </div>
+    <div class="metric-trend">Subdomain atau layanan yang muncul dalam data exposure.</div>
   </div>
 
   <div class="metric-card critical">
     <div class="metric-header">
-      <span class="metric-label">Temuan Risiko Tinggi</span>
-      <div class="metric-icon" style="color: var(--critical);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="metric-label">Risiko Tinggi</span>
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
     </div>
     <div class="metric-value">{{ kpis.high_risk_count }}</div>
-    <div class="metric-trend down">
-      <span>Memerlukan reset kredensial</span>
-    </div>
+    <div class="metric-trend">Temuan high dan critical yang perlu diprioritaskan.</div>
   </div>
 
   <div class="metric-card critical">
     <div class="metric-header">
-      <span class="metric-label">Insiden Kritikal</span>
-      <div class="metric-icon" style="color: var(--critical);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span class="metric-label">Kritikal</span>
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </div>
     </div>
     <div class="metric-value">{{ kpis.critical_count }}</div>
-    <div class="metric-trend down">
-      <span>Prioritas penanganan segera</span>
-    </div>
+    <div class="metric-trend">Perlu verifikasi, reset kredensial, dan pencabutan sesi aktif.</div>
   </div>
 
   <div class="metric-card success">
     <div class="metric-header">
-      <span class="metric-label">Antrean Belum Ditangani</span>
-      <div class="metric-icon" style="color: var(--low);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+      <span class="metric-label">Belum Ditangani</span>
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
       </div>
     </div>
     <div class="metric-value">{{ kpis.unresolved_count }}</div>
-    <div class="metric-trend">
-      <span>Proses verifikasi &amp; mitigasi</span>
-    </div>
+    <div class="metric-trend">Antrean validasi dan mitigasi yang masih terbuka.</div>
   </div>
 </section>
 
-<!-- ═══════ CHARTS ROW 1: GOALS & SLA TARGET + FACULTY EXPOSURE ═══════ -->
+<section class="quick-filter">
+  <div class="quick-filter-header">
+    <div>
+      <span class="eyebrow">Konteks Analisis Cepat</span>
+      <h2>Filter visual untuk membaca dashboard</h2>
+    </div>
+    <a href="{% url 'high_risk' %}" class="btn-action btn-outline">Buka Temuan Prioritas</a>
+  </div>
+  <div class="filter-chip-row">
+    <span class="filter-chip">Periode: <strong>Semua data terotorisasi</strong></span>
+    <span class="filter-chip">Unit: <strong>Seluruh UNAIR</strong></span>
+    <span class="filter-chip">Domain: <strong>unair.ac.id dan subdomain</strong></span>
+    <span class="filter-chip">Data sensitif: <strong>Dimasking</strong></span>
+    <span class="filter-chip">Prioritas: <strong>Critical dan High</strong></span>
+  </div>
+</section>
+
 <section class="charts-grid two-col">
-  <div class="chart-card" style="border-top: 3px solid var(--unair-gold);">
+  <div class="chart-card">
     <div class="chart-header">
       <div>
-        <h3>Target Keamanan &amp; SLA Goals (2026)</h3>
-        <p class="chart-subtitle">Capaian aktual (%) dibandingkan target standar keamanan universitas</p>
+        <h3>Target Keamanan dan Target Penanganan</h3>
+        <p class="chart-subtitle">Capaian aktual dibandingkan target penanganan internal.</p>
       </div>
-      <span class="pill medium">SLA AUDIT</span>
+      <span class="pill info">KPI</span>
     </div>
     <div class="chart-container">
       <canvas id="chartGoals"></canvas>
@@ -127,8 +125,8 @@
   <div class="chart-card">
     <div class="chart-header">
       <div>
-        <h3>Sebaran Exposure per Unit Fakultas</h3>
-        <p class="chart-subtitle">Distribusi insiden kredensial bocor pada setiap fakultas UNAIR</p>
+        <h3>Sebaran Exposure per Unit</h3>
+        <p class="chart-subtitle">Unit atau fakultas dengan temuan terbanyak perlu menjadi prioritas edukasi dan validasi.</p>
       </div>
     </div>
     <div class="chart-container">
@@ -137,13 +135,12 @@
   </div>
 </section>
 
-<!-- ═══════ CHARTS ROW 2: RISK LEVEL DOUGHNUT (COMPACT) + TIMELINE AREA ═══════ -->
 <section class="charts-grid asym-1-2">
   <div class="chart-card">
     <div class="chart-header">
       <div>
         <h3>Distribusi Level Risiko</h3>
-        <p class="chart-subtitle">Proporsi keparahan insiden</p>
+        <p class="chart-subtitle">Proporsi temuan berdasarkan tingkat keparahan.</p>
       </div>
     </div>
     <div class="chart-container compact doughnut-wrap">
@@ -154,8 +151,8 @@
   <div class="chart-card">
     <div class="chart-header">
       <div>
-        <h3>Timeline Tren Deteksi Bulanan</h3>
-        <p class="chart-subtitle">Laju kemunculan insiden exposure baru di darkweb / infostealer</p>
+        <h3>Tren Deteksi Bulanan</h3>
+        <p class="chart-subtitle">Kenaikan tren dapat menjadi indikator lonjakan infeksi perangkat atau paparan baru.</p>
       </div>
     </div>
     <div class="chart-container compact">
@@ -164,13 +161,12 @@
   </div>
 </section>
 
-<!-- ═══════ CHARTS ROW 3: STACKED ROLES + ACCOUNT TYPE DOUGHNUT (COMPACT) ═══════ -->
 <section class="charts-grid asym-2-1">
   <div class="chart-card">
     <div class="chart-header">
       <div>
-        <h3>Komposisi Peran: Mahasiswa vs Dosen vs Staf</h3>
-        <p class="chart-subtitle">Perbandingan proporsi tipe akun terdampak di setiap fakultas</p>
+        <h3>Komposisi Peran per Unit</h3>
+        <p class="chart-subtitle">Membantu memisahkan kebutuhan mitigasi antara mahasiswa, dosen, dan staf.</p>
       </div>
     </div>
     <div class="chart-container compact">
@@ -182,7 +178,7 @@
     <div class="chart-header">
       <div>
         <h3>Tipe Akun Terdampak</h3>
-        <p class="chart-subtitle">Proporsi keseluruhan</p>
+        <p class="chart-subtitle">Proporsi tipe identitas yang muncul dalam data exposure.</p>
       </div>
     </div>
     <div class="chart-container compact doughnut-wrap">
@@ -191,13 +187,12 @@
   </div>
 </section>
 
-<!-- ═══════ CHARTS ROW 4: EXPOSURE TYPES + HYGIENE SCORE SUMMARY ═══════ -->
 <section class="charts-grid two-col">
   <div class="chart-card">
     <div class="chart-header">
       <div>
-        <h3>Distribusi Jenis Data Terpapar</h3>
-        <p class="chart-subtitle">Klasifikasi data bocor (Password, Session Cookie, API Token, dll)</p>
+        <h3>Jenis Data Terpapar</h3>
+        <p class="chart-subtitle">Klasifikasi indikator seperti password, cookie, token, atau username.</p>
       </div>
     </div>
     <div class="chart-container compact">
@@ -205,39 +200,39 @@
     </div>
   </div>
 
-  <div class="chart-card" style="justify-content: center; background: linear-gradient(135deg, rgba(15,27,49,0.9), rgba(13,23,42,0.95));">
+  <div class="chart-card">
     <div class="chart-header">
       <div>
-        <span class="eyebrow" style="color: var(--cyber-cyan);">REKOMENDASI KEAMANAN</span>
-        <h3>Rekomendasi Tindakan Cepat (Cyber Hygiene)</h3>
-        <p class="chart-subtitle">Langkah mitigasi prioritas untuk menaikkan skor keamanan</p>
+        <span class="eyebrow">Rekomendasi Prioritas</span>
+        <h3>Tindakan Cepat yang Disarankan</h3>
+        <p class="chart-subtitle">Ringkasan langkah mitigasi untuk memudahkan pengambilan keputusan.</p>
       </div>
     </div>
-    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--border-subtle);">
-        <span style="font-weight: 600;">Enforce Wajib MFA di Domain Akademik & Staff</span>
+    <div class="recommendation-list">
+      <div class="recommendation-item">
+        <span>Validasi akun critical pada layanan akademik dan identitas staf.</span>
         <span class="pill critical">Prioritas 1</span>
       </div>
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--border-subtle);">
-        <span style="font-weight: 600;">Cabut Session Cookie pada Perangkat Infostealer</span>
+      <div class="recommendation-item">
+        <span>Reset kredensial dan cabut sesi aktif untuk temuan dengan password atau cookie.</span>
         <span class="pill high">Prioritas 2</span>
       </div>
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--border-subtle);">
-        <span style="font-weight: 600;">Sosialisasi Rutin Bahaya Bajakan (Stealer Malware)</span>
-        <span class="pill low">Berkala</span>
+      <div class="recommendation-item">
+        <span>Siapkan daftar unit dengan exposure tertinggi untuk edukasi cyber hygiene.</span>
+        <span class="pill medium">Berkala</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ RECENT HIGH-RISK INCIDENTS TABLE ═══════ -->
 <section class="panel">
   <div class="section-heading">
     <div>
-      <span class="eyebrow" style="color: var(--unair-gold);">TEMUAN INSIDEN TERBARU</span>
-      <h2>Temuan Risiko Tinggi &amp; Kritikal Terbaru</h2>
+      <span class="eyebrow">Temuan Prioritas Terbaru</span>
+      <h2>Temuan Risiko Tinggi dan Kritikal</h2>
+      <p>Data di bawah sudah dimasking dan hanya menampilkan indikator yang dibutuhkan untuk tindak lanjut.</p>
     </div>
-    <a href="{% url 'high_risk' %}" class="btn-action">Lihat Seluruh Insiden</a>
+    <a href="{% url 'high_risk' %}" class="btn-action btn-outline">Lihat Semua</a>
   </div>
 
   {% if recent_high_risk %}
@@ -246,63 +241,51 @@
         <thead>
           <tr>
             <th>Waktu Deteksi</th>
-            <th>Nama Lengkap & NIM/NIP</th>
+            <th>Identitas</th>
             <th>Email / Username</th>
-            <th>Unit Fakultas</th>
-            <th>Domain Terdampak</th>
-            <th>Tipe Exposure</th>
+            <th>Unit</th>
+            <th>Domain</th>
+            <th>Jenis Exposure</th>
             <th>Skor / Level</th>
-            <th>Status Remediasi</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           {% for item in recent_high_risk %}
-          <tr>
-            <td>
-              <span style="color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 12px;">
-                {{ item.discovered_at|date:"d M Y, H:i" }}
-              </span>
-            </td>
-            <td>
-              <strong style="color: #FFFFFF; font-size: 14px;">{{ item.identity_profile.full_name }}</strong>
-              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--unair-gold); margin-top: 2px;">{{ item.identity_profile.nim_nip }}</div>
-            </td>
-            <td>
-              <span style="color: var(--text-primary); font-size: 13.5px;">{{ item.email_masked|default:item.username_masked }}</span>
-              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px;">{{ item.identity_profile.get_account_type_display }}</div>
-            </td>
-            <td>{{ item.identity_profile.unit_name|default:"UNAIR Central" }}</td>
-            <td>
-              <span style="color: var(--cyber-cyan); font-weight: 600;">{{ item.normalized_domain }}</span>
-            </td>
-            <td>
-              {% for t in item.exposure_types %}
-                <span class="pill info" style="margin-right: 4px;">{{ t }}</span>
-              {% endfor %}
-            </td>
-            <td>
-              {% if item.risk_score.level == 'critical' %}
-                <span class="pill critical">● CRITICAL ({{ item.risk_score.numeric_score }})</span>
-              {% elif item.risk_score.level == 'high' %}
-                <span class="pill high">● HIGH ({{ item.risk_score.numeric_score }})</span>
-              {% else %}
-                <span class="pill medium">● {{ item.risk_score.level|upper }}</span>
-              {% endif %}
-            </td>
-            <td>
-              <span class="pill low">
-                {{ item.remediation.get_status_display|default:"Belum Ditangani" }}
-              </span>
-            </td>
-          </tr>
+            <tr>
+              <td><span class="mono text-muted">{{ item.observed_at|date:"d M Y, H:i" }}</span></td>
+              <td>
+                <div class="table-title">{{ item.identity_profile.full_name }}</div>
+                <div class="table-subtitle mono">{{ item.identity_profile.nim_nip }}</div>
+              </td>
+              <td>
+                <div class="text-strong">{{ item.email_masked|default:item.username_masked }}</div>
+                <div class="table-subtitle">{{ item.identity_profile.get_account_type_display }}</div>
+              </td>
+              <td>{{ item.identity_profile.unit_name|default:"UNAIR Central" }}</td>
+              <td><strong class="text-blue">{{ item.normalized_domain }}</strong></td>
+              <td>
+                {% for t in item.exposure_types %}
+                  <span class="pill info">{{ t }}</span>
+                {% endfor %}
+              </td>
+              <td>
+                {% if item.risk_score.level == 'critical' %}
+                  <span class="pill critical">Critical · {{ item.risk_score.score }}</span>
+                {% elif item.risk_score.level == 'high' %}
+                  <span class="pill high">High · {{ item.risk_score.score }}</span>
+                {% else %}
+                  <span class="pill medium">{{ item.risk_score.level|capfirst }} · {{ item.risk_score.score }}</span>
+                {% endif %}
+              </td>
+              <td><span class="pill low">{{ item.remediation.get_status_display|default:"Belum Ditangani" }}</span></td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   {% else %}
-    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
-      <p>Tidak ada temuan insiden berisiko tinggi saat ini.</p>
-    </div>
+    <div class="empty-state">Tidak ada temuan insiden berisiko tinggi saat ini.</div>
   {% endif %}
 </section>
 {% endblock %}

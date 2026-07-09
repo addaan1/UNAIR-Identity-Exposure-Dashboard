@@ -1,55 +1,50 @@
 {% extends "base.html" %}
 
-{% block page_title %}Tindak Lanjut & Remediasi SOC{% endblock %}
+{% block page_title %}Tindak Lanjut dan Remediasi{% endblock %}
 
 {% block content %}
-<!-- ═══════ REMEDIATION SUMMARY & DOUGHNUT CHART ═══════ -->
 <section class="charts-grid asym-1-2">
-  <!-- Chart Card (Compact Doughnut) -->
   <div class="chart-card">
     <div class="chart-header">
       <div>
         <h3>Distribusi Status Remediasi</h3>
-        <p class="chart-subtitle">Proporsi status penanganan insiden kredensial</p>
+        <p class="chart-subtitle">Proporsi status penanganan temuan identitas terpapar.</p>
       </div>
-      <span class="pill info">WORKFLOW SOC</span>
+      <span class="pill info">Workflow</span>
     </div>
     <div class="chart-container compact doughnut-wrap">
       <canvas id="chartRemediation"></canvas>
     </div>
   </div>
 
-  <!-- SOC SLA Workflow Guide Card -->
-  <div class="chart-card" style="justify-content: space-between; background: linear-gradient(135deg, rgba(15,27,49,0.85), rgba(13,23,42,0.95));">
-    <div>
-      <span class="eyebrow" style="color: var(--unair-gold);">INCIDENT RESPONSE PROTOCOL</span>
-      <h3 style="font-size: 18px; margin-top: 4px;">SLA Penanganan & Tindak Lanjut Insiden</h3>
-      <p style="color: var(--text-secondary); font-size: 13.5px; margin-top: 6px;">
-        Setiap insiden kredensial bocor yang terdeteksi wajib melalui proses verifikasi, pencabutan sesi aktif, dan pembaruan kata sandi oleh pemilik akun.
-      </p>
+  <div class="chart-card">
+    <div class="chart-header">
+      <div>
+        <span class="eyebrow">Incident Response Guide</span>
+        <h3>Target Penanganan dan Tindak Lanjut</h3>
+        <p class="chart-subtitle">Setiap temuan perlu melalui verifikasi, pemberitahuan unit, reset kredensial bila diperlukan, serta pencatatan status penanganan.</p>
+      </div>
     </div>
-
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px;">
-      <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 14px; text-align: center;">
-        <span style="font-size: 11px; font-weight: 700; color: #F87171; display: block;">KRITICAL SLA</span>
-        <strong style="font-size: 24px; color: #FFFFFF; line-height: 1.2;">&lt; 24 Jam</strong>
-        <span style="font-size: 11px; color: var(--text-secondary); display: block;">Reset Wajib</span>
+    <div class="sla-grid">
+      <div class="sla-card">
+        <span>Critical</span>
+        <strong>&lt; 24 Jam</strong>
+        <small>Reset dan cabut sesi aktif</small>
       </div>
-      <div style="background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 12px; padding: 14px; text-align: center;">
-        <span style="font-size: 11px; font-weight: 700; color: #FB923C; display: block;">HIGH RISK SLA</span>
-        <strong style="font-size: 24px; color: #FFFFFF; line-height: 1.2;">48 Jam</strong>
-        <span style="font-size: 11px; color: var(--text-secondary); display: block;">Notifikasi Unit</span>
+      <div class="sla-card">
+        <span>High Risk</span>
+        <strong>48 Jam</strong>
+        <small>Verifikasi dan notifikasi unit</small>
       </div>
-      <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 14px; text-align: center;">
-        <span style="font-size: 11px; font-weight: 700; color: #34D399; display: block;">TARGET AUDIT</span>
-        <strong style="font-size: 24px; color: #FFFFFF; line-height: 1.2;">100%</strong>
-        <span style="font-size: 11px; color: var(--text-secondary); display: block;">Terselesaikan</span>
+      <div class="sla-card">
+        <span>Audit Target</span>
+        <strong>100%</strong>
+        <small>Semua tindakan tercatat</small>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ FILTER & SEARCH BAR ═══════ -->
 <section class="filter-bar">
   <form method="get">
     <input type="search" name="q" value="{{ filters.q }}" placeholder="Cari domain, email, atau unit fakultas...">
@@ -63,62 +58,59 @@
   </form>
 </section>
 
-<!-- ═══════ REMEDIATION WORKFLOW LIST ═══════ -->
 <section class="panel">
   <div class="section-heading">
     <div>
-      <span class="eyebrow" style="color: var(--cyber-cyan);">QUEUE MANAGEMENT</span>
-      <h2>Daftar Antrean & Log Tindak Lanjut SOC</h2>
+      <span class="eyebrow">Action Tracker</span>
+      <h2>Antrean dan Log Tindak Lanjut</h2>
+      <p>Daftar ini digunakan untuk memantau progres validasi, notifikasi, mitigasi, dan penyelesaian temuan.</p>
     </div>
   </div>
 
   <div class="remediation-grid">
     {% for action in actions %}
       <div class="remediation-card">
-        <div style="display: flex; align-items: center; gap: 16px; flex: 1;">
+        <div class="remediation-main">
           {% if action.exposure.risk_score.level == 'critical' %}
-            <span class="pill critical">CRITICAL</span>
+            <span class="pill critical">Critical</span>
           {% elif action.exposure.risk_score.level == 'high' %}
-            <span class="pill high">HIGH</span>
+            <span class="pill high">High</span>
           {% else %}
-            <span class="pill medium">{{ action.exposure.risk_score.level|upper }}</span>
+            <span class="pill medium">{{ action.exposure.risk_score.level|capfirst }}</span>
           {% endif %}
 
           <div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <strong style="font-size: 15px; color: #FFFFFF;">{{ action.exposure.normalized_domain }}</strong>
-              <span style="font-size: 12px; color: var(--text-muted);">● {{ action.exposure.identity_profile.unit_name|default:"UNAIR Central" }}</span>
+            <div class="remediation-title">
+              <strong>{{ action.exposure.normalized_domain }}</strong>
+              <span class="text-muted">· {{ action.exposure.identity_profile.unit_name|default:"UNAIR Central" }}</span>
             </div>
-            <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">
-              Staf/Mahasiswa: <strong style="color: #FFFFFF;">{{ action.exposure.identity_profile.full_name }}</strong> 
-              <span style="color: var(--unair-gold); margin-left: 6px; font-family: 'JetBrains Mono', monospace;">({{ action.exposure.identity_profile.nim_nip }})</span>
-              <br>
-              Email/Username: <strong style="color: var(--text-primary);">{{ action.exposure.email_masked|default:action.exposure.username_masked }}</strong>
-              <span style="color: var(--text-muted); margin-left: 8px;">Terdeteksi: {{ action.exposure.observed_at|date:"d M Y" }}</span>
+            <div class="remediation-detail">
+              Identitas: <strong>{{ action.exposure.identity_profile.full_name }}</strong>
+              <span class="mono">({{ action.exposure.identity_profile.nim_nip }})</span><br>
+              Email/Username: <strong>{{ action.exposure.email_masked|default:action.exposure.username_masked }}</strong>
+              <span class="text-muted">· Terdeteksi {{ action.exposure.observed_at|date:"d M Y" }}</span>
             </div>
           </div>
         </div>
 
         {% if can_edit %}
-          <form method="post" style="display: flex; align-items: center; gap: 10px;">
+          <form method="post" class="remediation-form">
             {% csrf_token %}
             <input type="hidden" name="action_id" value="{{ action.id }}">
-            <select name="status" style="padding: 8px 12px; font-size: 12.5px;">
+            <select name="status">
               {% for value, label in statuses %}
                 <option value="{{ value }}" {% if action.status == value %}selected{% endif %}>{{ label }}</option>
               {% endfor %}
             </select>
-            <input type="text" name="notes" value="{{ action.notes }}" placeholder="Catatan mitigasi..." style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 8px 12px; color: #fff; width: 200px; font-size: 12.5px;">
-            <button type="submit" class="btn-action" style="padding: 8px 14px;">Simpan</button>
+            <input type="text" name="notes" value="{{ action.notes }}" placeholder="Catatan mitigasi...">
+            <button type="submit" class="btn-action btn-primary">Simpan</button>
           </form>
         {% else %}
-          <span class="pill low" style="font-size: 12px;">{{ action.get_status_display }}</span>
+          <span class="pill low">{{ action.get_status_display }}</span>
         {% endif %}
       </div>
     {% empty %}
-      <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
-        <p>Tidak ada antrean tindak lanjut saat ini.</p>
-      </div>
+      <div class="empty-state">Tidak ada antrean tindak lanjut saat ini.</div>
     {% endfor %}
   </div>
 </section>

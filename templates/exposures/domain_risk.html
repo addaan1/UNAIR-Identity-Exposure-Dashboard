@@ -1,59 +1,56 @@
 {% extends "base.html" %}
 
-{% block page_title %}Intelijen & Analisis Domain UNAIR{% endblock %}
+{% block page_title %}Domain Risk Monitoring{% endblock %}
 
 {% block content %}
-<!-- ═══════ TOP DOMAIN CHART & INTELLIGENCE SUMMARY ═══════ -->
 <section class="charts-grid asym-2-1">
-  <!-- Chart Card -->
   <div class="chart-card">
     <div class="chart-header">
       <div>
-        <h3>Top Domain & Subdomain Terdampak</h3>
-        <p class="chart-subtitle">Frekuensi insiden kredensial bocor per subdomain aktif UNAIR</p>
+        <h3>Top Domain dan Subdomain Terdampak</h3>
+        <p class="chart-subtitle">Frekuensi temuan paparan identitas berdasarkan domain layanan UNAIR.</p>
       </div>
-      <span class="pill critical">ASSET SHIELD</span>
+      <span class="pill info">Domain Intelligence</span>
     </div>
     <div class="chart-container compact">
       <canvas id="chartTopDomains"></canvas>
     </div>
   </div>
 
-  <!-- Domain Defense Summary -->
-  <div class="chart-card" style="justify-content: space-between; background: linear-gradient(135deg, rgba(15,27,49,0.9), rgba(13,23,42,0.95));">
-    <div>
-      <span class="eyebrow" style="color: var(--unair-gold);">DOMAIN ATTACK SURFACE</span>
-      <h3 style="font-size: 18px; margin-top: 4px;">Perlindungan Subdomain Akademik & Sistem Kepegawaian</h3>
-      <p style="color: var(--text-secondary); font-size: 13.5px; margin-top: 6px;">
-        Sistem mendeteksi paparan pada layanan publik universitas seperti cybercampus, ssmart, heba, dan perpustakaan digital.
-      </p>
+  <div class="chart-card">
+    <div class="chart-header">
+      <div>
+        <span class="eyebrow">Ringkasan Domain</span>
+        <h3>Layanan Prioritas yang Perlu Dipantau</h3>
+        <p class="chart-subtitle">Domain dengan kritikalitas tinggi sebaiknya diprioritaskan untuk validasi akun, reset kredensial, dan pemeriksaan sesi aktif.</p>
+      </div>
     </div>
-
-    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--border-subtle);">
-        <span style="font-size: 13px; color: var(--text-secondary);">Cybercampus (Akademik)</span>
+    <div class="summary-stack">
+      <div class="summary-row">
+        <span>Layanan akademik dan sistem masuk terpusat</span>
         <span class="pill critical">Kritikalitas 5/5</span>
       </div>
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--border-subtle);">
-        <span style="font-size: 13px; color: var(--text-secondary);">SSMART Keuangan & SDM</span>
+      <div class="summary-row">
+        <span>Layanan administrasi, keuangan, dan sumber daya manusia</span>
         <span class="pill high">Kritikalitas 4/5</span>
       </div>
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--border-subtle);">
-        <span style="font-size: 13px; color: var(--text-secondary);">AURA & e-Journal</span>
+      <div class="summary-row">
+        <span>Portal informasi, jurnal, dan layanan publik</span>
         <span class="pill medium">Kritikalitas 3/5</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ DOMAIN RISK TABLE ═══════ -->
 <section class="panel">
   <div class="section-heading">
     <div>
-      <span class="eyebrow" style="color: var(--cyber-cyan);">ASSET REGISTER</span>
+      <span class="eyebrow">Asset Register</span>
       <h2>Profil Pemetaan Risiko Domain UNAIR</h2>
+      <p>Tabel ini membantu menentukan domain mana yang paling membutuhkan tindak lanjut teknis.</p>
     </div>
   </div>
+
   <div class="table-wrap">
     <table>
       <thead>
@@ -64,40 +61,40 @@
           <th>Kritikalitas Aset</th>
           <th>Insiden Exposure</th>
           <th>Identitas Unik</th>
-          <th>Skor Keparahan Maks</th>
+          <th>Skor Maksimum</th>
         </tr>
       </thead>
       <tbody>
         {% for row in rows %}
           <tr>
-            <td><strong style="color: #FFFFFF; font-size: 14px;">{{ row.domain }}</strong></td>
+            <td><span class="table-title">{{ row.domain }}</span></td>
             <td><span class="pill info">{{ row.get_category_display }}</span></td>
             <td>{{ row.unit_name }}</td>
             <td>
               {% if row.criticality >= 5 %}
-                <span class="pill critical">★ 5 / 5 VITAL</span>
+                <span class="pill critical">5 / 5 · Vital</span>
               {% elif row.criticality >= 4 %}
-                <span class="pill high">★ 4 / 5 HIGH</span>
+                <span class="pill high">4 / 5 · High</span>
               {% else %}
-                <span class="pill medium">★ {{ row.criticality }} / 5</span>
+                <span class="pill medium">{{ row.criticality }} / 5</span>
               {% endif %}
             </td>
-            <td><strong style="color: #FFFFFF;">{{ row.exposure_count }}</strong> insiden</td>
+            <td><strong class="text-strong">{{ row.exposure_count }}</strong> insiden</td>
             <td>{{ row.identity_count }} akun</td>
             <td>
               {% if row.max_score >= 85 %}
-                <span class="pill critical">CRITICAL ({{ row.max_score|default:0 }})</span>
+                <span class="pill critical">Critical · {{ row.max_score|default:0 }}</span>
               {% elif row.max_score >= 70 %}
-                <span class="pill high">HIGH ({{ row.max_score|default:0 }})</span>
+                <span class="pill high">High · {{ row.max_score|default:0 }}</span>
               {% elif row.max_score >= 40 %}
-                <span class="pill medium">MEDIUM ({{ row.max_score|default:0 }})</span>
+                <span class="pill medium">Medium · {{ row.max_score|default:0 }}</span>
               {% else %}
-                <span class="pill low">LOW ({{ row.max_score|default:0 }})</span>
+                <span class="pill low">Low · {{ row.max_score|default:0 }}</span>
               {% endif %}
             </td>
           </tr>
         {% empty %}
-          <tr><td colspan="7" style="text-align:center; padding: 40px; color:var(--text-secondary);">Belum ada data domain exposure.</td></tr>
+          <tr><td colspan="7" class="empty-state">Belum ada data domain exposure.</td></tr>
         {% endfor %}
       </tbody>
     </table>

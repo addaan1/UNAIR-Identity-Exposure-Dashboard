@@ -34,6 +34,18 @@ Demo users:
 
 Use the value of `DEMO_PASSWORD` from `.env`.
 
+
+## UI Revision Notes
+
+The dashboard interface has been revised to use a light Universitas Airlangga institutional theme instead of a dark cyber theme. Main UI updates include:
+
+- Light main workspace with UNAIR blue and gold accents.
+- Collapsible sidebar with localStorage persistence.
+- Cleaner topbar, KPI cards, tables, chart cards, filters, and login page.
+- More professional wording for executive and operational users.
+- Template bug fixes for risk score display and table empty-state column spans.
+- Chart.js palette adjusted for light-mode readability.
+
 ## Management Commands
 
 ```bash
