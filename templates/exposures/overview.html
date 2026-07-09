@@ -3,8 +3,89 @@
 {% block page_title %}Executive Overview{% endblock %}
 
 {% block content %}
-<section class="empty-state">
-  <p class="eyebrow">Scaffold ready</p>
-  <h2>Dashboard workspace is ready for data and risk modules.</h2>
+<section class="kpi-grid">
+  <div class="metric"><span>Total exposures</span><strong>{{ kpis.total_exposures }}</strong></div>
+  <div class="metric"><span>Unique identities</span><strong>{{ kpis.unique_identities }}</strong></div>
+  <div class="metric"><span>Impacted domains</span><strong>{{ kpis.impacted_domains }}</strong></div>
+  <div class="metric attention"><span>High risk</span><strong>{{ kpis.high_risk_count }}</strong></div>
+  <div class="metric"><span>Open actions</span><strong>{{ kpis.unresolved_count }}</strong></div>
+</section>
+
+<section class="workspace-grid two-columns">
+  <div class="panel">
+    <div class="section-heading">
+      <p class="eyebrow">Domain mapping</p>
+      <h2>Top impacted UNAIR domains</h2>
+    </div>
+    <div class="rank-list">
+      {% for row in domain_rows %}
+        <a href="{% url 'domain_risk' %}" class="rank-row">
+          <span>
+            <strong>{{ row.domain }}</strong>
+            <small>{{ row.unit_name }}</small>
+          </span>
+          <em>{{ row.max_score|default:0 }}</em>
+        </a>
+      {% empty %}
+        <p class="muted">No imported data yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="section-heading">
+      <p class="eyebrow">Unit priority</p>
+      <h2>Mitigation heatmap</h2>
+    </div>
+    <div class="heatmap">
+      {% for row in unit_rows %}
+        <div class="heat-row">
+          <span>{{ row.unit_name }}</span>
+          <div class="heat-track"><i data-bar-value="{{ row.exposure_total }}"></i></div>
+          <strong>{{ row.exposure_total }}</strong>
+        </div>
+      {% empty %}
+        <p class="muted">No unit mapping available.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="section-heading split">
+    <div>
+      <p class="eyebrow">Priority queue</p>
+      <h2>Recent high-risk findings</h2>
+    </div>
+    <span class="timestamp">Last sync {{ last_sync|date:"d M Y H:i" }}</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Domain</th>
+          <th>Identity</th>
+          <th>Risk</th>
+          <th>Status</th>
+          <th>Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for exposure in recent_high_risk %}
+          <tr>
+            <td>{{ exposure.source_id }}</td>
+            <td>{{ exposure.normalized_domain }}</td>
+            <td>{{ exposure.email_masked|default:exposure.username_masked }}</td>
+            <td><span class="risk {{ exposure.risk_score.level }}">{{ exposure.risk_score.score }} {{ exposure.risk_score.level }}</span></td>
+            <td><span class="status">{{ exposure.remediation.status }}</span></td>
+            <td>{{ exposure.masked_evidence }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6">No high-risk exposure available.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 {% endblock %}

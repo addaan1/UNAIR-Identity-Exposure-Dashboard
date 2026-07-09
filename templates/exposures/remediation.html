@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block page_title %}Remediation Tracker{% endblock %}
+
+{% block content %}
+<section class="filter-bar">
+  <form method="get">
+    <input type="search" name="q" value="{{ filters.q }}" placeholder="Search action queue">
+    <select name="status">
+      <option value="">All statuses</option>
+      {% for value, label in statuses %}
+        <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+  </form>
+</section>
+
+<section class="panel">
+  <div class="section-heading">
+    <p class="eyebrow">Action queue</p>
+    <h2>Status and follow-up notes</h2>
+  </div>
+  <div class="remediation-list">
+    {% for action in actions %}
+      <article class="remediation-item">
+        <div>
+          <span class="risk {{ action.exposure.risk_score.level }}">{{ action.exposure.risk_score.score }} {{ action.exposure.risk_score.level }}</span>
+          <h3>{{ action.exposure.normalized_domain }}</h3>
+          <p>{{ action.exposure.email_masked|default:action.exposure.username_masked }} - {{ action.exposure.masked_evidence }}</p>
+        </div>
+        {% if can_edit %}
+          <form method="post" class="inline-form">
+            {% csrf_token %}
+            <input type="hidden" name="action_id" value="{{ action.id }}">
+            <select name="status">
+              {% for value, label in statuses %}
+                <option value="{{ value }}" {% if action.status == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <input type="text" name="notes" value="{{ action.notes }}" placeholder="Follow-up note">
+            <button type="submit">Update</button>
+          </form>
+        {% else %}
+          <span class="status">{{ action.status }}</span>
+        {% endif %}
+      </article>
+    {% empty %}
+      <p class="muted">No remediation actions available.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

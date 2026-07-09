@@ -1,0 +1,8 @@
+source_id,observed_at,url,username,email,exposure_types,password_present,cookie_present,token_present,source_label,unit_hint
+DUMMY-001,2026-07-01T08:45:00+07:00,https://login.unair.ac.id/sso/login,sahrul.ae,sahrul.ae@student.unair.ac.id,"password,sso",true,false,false,synthetic-stealer-sample,Student Affairs
+DUMMY-002,2026-07-02T10:20:00+07:00,https://cybercampus.unair.ac.id/student,reihan.ma,reihan.ma@student.unair.ac.id,"password,academic",true,true,false,synthetic-stealer-sample,Academic Administration
+DUMMY-003,2026-07-03T15:15:00+07:00,https://email.unair.ac.id/webmail,staff.ops,staff.ops@unair.ac.id,"email,password,token",true,false,true,synthetic-stealer-sample,Directorate of Information Systems
+DUMMY-004,2026-06-24T12:10:00+07:00,https://e-learning.unair.ac.id/course/view.php,dosen.fst,dosen.fst@fst.unair.ac.id,"lms,cookie",false,true,false,synthetic-stealer-sample,Faculty of Science and Technology
+DUMMY-005,2026-05-30T09:30:00+07:00,https://fkg.unair.ac.id/login,clinic.admin,clinic.admin@fkg.unair.ac.id,"admin,password",true,false,false,synthetic-stealer-sample,Faculty of Dental Medicine
+DUMMY-006,2026-07-04T17:45:00+07:00,https://fib.unair.ac.id/portal,portal.user,,"username-only",false,false,false,synthetic-stealer-sample,Faculty of Humanities
+DUMMY-007,2026-07-05T20:10:00+07:00,https://login.unair.ac.id/oauth/authorize,staff.ops,staff.ops@unair.ac.id,"sso,cookie,token",false,true,true,synthetic-stealer-sample,Directorate of Information Systems

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block page_title %}Domain And Subdomain Risk{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <div class="section-heading">
+    <p class="eyebrow">Risk mapping</p>
+    <h2>UNAIR domain exposure profile</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Domain</th>
+          <th>System category</th>
+          <th>Unit</th>
+          <th>Criticality</th>
+          <th>Exposures</th>
+          <th>Unique identities</th>
+          <th>Max score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            <td><strong>{{ row.domain }}</strong></td>
+            <td>{{ row.category }}</td>
+            <td>{{ row.unit_name }}</td>
+            <td>{{ row.criticality }}/5</td>
+            <td>{{ row.exposure_count }}</td>
+            <td>{{ row.identity_count }}</td>
+            <td><span class="risk high">{{ row.max_score|default:0 }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7">No domain exposure data yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

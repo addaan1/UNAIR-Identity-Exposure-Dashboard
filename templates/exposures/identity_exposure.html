@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block page_title %}Identity Exposure Profiles{% endblock %}
+
+{% block content %}
+<section class="filter-bar">
+  <form method="get">
+    <input type="search" name="q" value="{{ filters.q }}" placeholder="Search identity, domain, unit">
+    <button type="submit">Filter</button>
+  </form>
+</section>
+
+<section class="panel">
+  <div class="section-heading">
+    <p class="eyebrow">Identity matching</p>
+    <h2>Clustered profiles requiring validation</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Masked identity</th>
+          <th>Account type</th>
+          <th>Unit</th>
+          <th>Confidence</th>
+          <th>Records</th>
+          <th>Max risk</th>
+          <th>Validation</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for profile in profiles %}
+          <tr>
+            <td><strong>{{ profile.masked_email|default:profile.masked_username }}</strong></td>
+            <td>{{ profile.account_type }}</td>
+            <td>{{ profile.unit_name }}</td>
+            <td>{{ profile.confidence_score }}</td>
+            <td>{{ profile.exposure_total }}</td>
+            <td><span class="risk high">{{ profile.max_score|default:0 }}</span></td>
+            <td><span class="status">{{ profile.validation_status }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7">No identity profiles available.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

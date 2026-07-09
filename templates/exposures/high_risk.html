@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block page_title %}High-Risk Findings{% endblock %}
+
+{% block content %}
+<section class="filter-bar">
+  <form method="get">
+    <input type="search" name="q" value="{{ filters.q }}" placeholder="Search source, domain, identity, unit">
+    <select name="level">
+      <option value="">All risk levels</option>
+      {% for value, label in risk_levels %}
+        <option value="{{ value }}" {% if filters.level == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <select name="status">
+      <option value="">All statuses</option>
+      {% for value, label in statuses %}
+        <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+  </form>
+</section>
+
+<section class="panel">
+  <div class="section-heading">
+    <p class="eyebrow">Priority list</p>
+    <h2>Findings ordered by risk score</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Observed</th>
+          <th>Domain</th>
+          <th>Identity</th>
+          <th>Risk</th>
+          <th>Reason</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for exposure in exposures %}
+          <tr>
+            <td>{{ exposure.source_id }}</td>
+            <td>{{ exposure.observed_at|date:"d M Y" }}</td>
+            <td>{{ exposure.normalized_domain }}</td>
+            <td>{{ exposure.email_masked|default:exposure.username_masked }}</td>
+            <td><span class="risk {{ exposure.risk_score.level }}">{{ exposure.risk_score.score }} {{ exposure.risk_score.level }}</span></td>
+            <td>
+              {% for factor in exposure.risk_score.factors %}
+                <span class="factor">{{ factor }}</span>
+              {% endfor %}
+            </td>
+            <td><span class="status">{{ exposure.remediation.status }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7">No high-risk findings match the current filter.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

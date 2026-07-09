@@ -6,17 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}UNAIR Identity Exposure Dashboard{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'exposures/css/dashboard.css' %}">
+  <script defer src="{% static 'exposures/js/dashboard.js' %}"></script>
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand-lockup">
         <img src="{% static 'exposures/img/unair-logo.png' %}" alt="Universitas Airlangga">
-        <span>Identity Exposure</span>
+        <span>Identity Exposure Intelligence</span>
       </div>
       <nav class="sidebar-nav" aria-label="Primary navigation">
-        <a href="{% url 'overview' %}">Overview</a>
+        <a href="{% url 'overview' %}" {% if request.resolver_match.url_name == 'overview' %}class="active"{% endif %}>Overview</a>
+        <a href="{% url 'domain_risk' %}" {% if request.resolver_match.url_name == 'domain_risk' %}class="active"{% endif %}>Domain Risk</a>
+        <a href="{% url 'identity_exposure' %}" {% if request.resolver_match.url_name == 'identity_exposure' %}class="active"{% endif %}>Identities</a>
+        <a href="{% url 'high_risk' %}" {% if request.resolver_match.url_name == 'high_risk' %}class="active"{% endif %}>High Risk</a>
+        <a href="{% url 'remediation' %}" {% if request.resolver_match.url_name == 'remediation' %}class="active"{% endif %}>Remediation</a>
       </nav>
+      <div class="sidebar-footer">
+        <span>Data view</span>
+        <strong>Sanitized by default</strong>
+      </div>
     </aside>
     <main class="workspace">
       <header class="topbar">
@@ -24,13 +33,23 @@
           <p class="eyebrow">Universitas Airlangga</p>
           <h1>{% block page_title %}Exposure Intelligence{% endblock %}</h1>
         </div>
-        {% if request.user.is_authenticated %}
-          <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button class="ghost-button" type="submit">Logout</button>
-          </form>
-        {% endif %}
+        <div class="topbar-actions">
+          <a class="ghost-button" href="{% url 'export_exposures_csv' %}">Export CSV</a>
+          {% if request.user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button class="ghost-button" type="submit">Logout</button>
+            </form>
+          {% endif %}
+        </div>
       </header>
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
       {% block content %}{% endblock %}
     </main>
   </div>
