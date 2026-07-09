@@ -10,4 +10,5 @@ urlpatterns = [
     path("high-risk/", views.high_risk, name="high_risk"),
     path("remediation/", views.remediation, name="remediation"),
     path("export/exposures.csv", views.export_exposures_csv, name="export_exposures_csv"),
+    path("api/chart-data/", views.api_chart_data, name="api_chart_data"),
 ]

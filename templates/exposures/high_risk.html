@@ -1,62 +1,88 @@
 {% extends "base.html" %}
 
-{% block page_title %}High-Risk Findings{% endblock %}
+{% block page_title %}Temuan Risiko Tinggi & Kritis SOC{% endblock %}
 
 {% block content %}
+<!-- ═══════ FILTER BAR ═══════ -->
 <section class="filter-bar">
   <form method="get">
-    <input type="search" name="q" value="{{ filters.q }}" placeholder="Search source, domain, identity, unit">
+    <input type="search" name="q" value="{{ filters.q }}" placeholder="🔍 Cari sumber, domain, email, atau unit...">
     <select name="level">
-      <option value="">All risk levels</option>
+      <option value="">Semua Level Risiko</option>
       {% for value, label in risk_levels %}
         <option value="{{ value }}" {% if filters.level == value %}selected{% endif %}>{{ label }}</option>
       {% endfor %}
     </select>
     <select name="status">
-      <option value="">All statuses</option>
+      <option value="">Semua Status</option>
       {% for value, label in statuses %}
         <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ label }}</option>
       {% endfor %}
     </select>
-    <button type="submit">Filter</button>
+    <button type="submit" class="btn-action btn-primary-gold">Filter Temuan</button>
   </form>
 </section>
 
+<!-- ═══════ HIGH RISK INCIDENTS TABLE ═══════ -->
 <section class="panel">
   <div class="section-heading">
-    <p class="eyebrow">Priority list</p>
-    <h2>Findings ordered by risk score</h2>
+    <div>
+      <span class="eyebrow" style="color: #EF4444;">CRITICAL EXPOSURE LOG</span>
+      <h2>Daftar Insiden Diurutkan Berdasarkan Keparahan</h2>
+    </div>
   </div>
+
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th>Source</th>
-          <th>Observed</th>
-          <th>Domain</th>
-          <th>Identity</th>
-          <th>Risk</th>
-          <th>Reason</th>
-          <th>Status</th>
+          <th>ID Sumber</th>
+          <th>Waktu Observasi</th>
+          <th>Domain Terdampak</th>
+          <th>Identitas (Masked)</th>
+          <th>Skor & Keparahan</th>
+          <th>Faktor Risiko Intelijen</th>
+          <th>Status Penanganan</th>
         </tr>
       </thead>
       <tbody>
         {% for exposure in exposures %}
           <tr>
-            <td>{{ exposure.source_id }}</td>
-            <td>{{ exposure.observed_at|date:"d M Y" }}</td>
-            <td>{{ exposure.normalized_domain }}</td>
-            <td>{{ exposure.email_masked|default:exposure.username_masked }}</td>
-            <td><span class="risk {{ exposure.risk_score.level }}">{{ exposure.risk_score.score }} {{ exposure.risk_score.level }}</span></td>
             <td>
-              {% for factor in exposure.risk_score.factors %}
-                <span class="factor">{{ factor }}</span>
-              {% endfor %}
+              <strong style="color: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 12px;">{{ exposure.source_id }}</strong>
             </td>
-            <td><span class="status">{{ exposure.remediation.status }}</span></td>
+            <td>
+              <span style="color: var(--text-secondary);">{{ exposure.observed_at|date:"d M Y, H:i" }}</span>
+            </td>
+            <td>
+              <strong style="color: var(--cyber-cyan);">{{ exposure.normalized_domain }}</strong>
+            </td>
+            <td>
+              <strong style="color: #FFFFFF;">{{ exposure.email_masked|default:exposure.username_masked }}</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">{{ exposure.identity_profile.unit_name|default:"UNAIR Central" }}</div>
+            </td>
+            <td>
+              {% if exposure.risk_score.level == 'critical' %}
+                <span class="pill critical">● CRITICAL ({{ exposure.risk_score.numeric_score }})</span>
+              {% elif exposure.risk_score.level == 'high' %}
+                <span class="pill high">● HIGH ({{ exposure.risk_score.numeric_score }})</span>
+              {% else %}
+                <span class="pill medium">● {{ exposure.risk_score.level|upper }}</span>
+              {% endif %}
+            </td>
+            <td>
+              <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                {% for factor in exposure.risk_score.factors %}
+                  <span class="pill info" style="font-size: 11px;">{{ factor }}</span>
+                {% endfor %}
+              </div>
+            </td>
+            <td>
+              <span class="pill low">{{ exposure.remediation.get_status_display|default:"Belum Ditangani" }}</span>
+            </td>
           </tr>
         {% empty %}
-          <tr><td colspan="7">No high-risk findings match the current filter.</td></tr>
+          <tr><td colspan="7" style="text-align:center; padding: 40px; color:var(--text-secondary);">Tidak ada temuan risiko tinggi yang sesuai filter.</td></tr>
         {% endfor %}
       </tbody>
     </table>

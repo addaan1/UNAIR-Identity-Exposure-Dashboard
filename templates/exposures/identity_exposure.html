@@ -1,46 +1,83 @@
 {% extends "base.html" %}
 
-{% block page_title %}Identity Exposure Profiles{% endblock %}
+{% block page_title %}Profil & Validasi Identitas Sivitas UNAIR{% endblock %}
 
 {% block content %}
+<!-- ═══════ FILTER BAR ═══════ -->
 <section class="filter-bar">
   <form method="get">
-    <input type="search" name="q" value="{{ filters.q }}" placeholder="Search identity, domain, unit">
-    <button type="submit">Filter</button>
+    <input type="search" name="q" value="{{ filters.q }}" placeholder="🔍 Cari identitas, domain, atau unit fakultas...">
+    <select name="account_type">
+      <option value="">Semua Tipe Akun</option>
+      {% for value, label in account_types %}
+        <option value="{{ value }}" {% if filters.account_type == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <select name="level">
+      <option value="">Semua Level Risiko</option>
+      {% for value, label in risk_levels %}
+        <option value="{{ value }}" {% if filters.level == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn-action btn-primary-gold">Filter Identitas</button>
   </form>
 </section>
 
+<!-- ═══════ IDENTITIES TABLE ═══════ -->
 <section class="panel">
   <div class="section-heading">
-    <p class="eyebrow">Identity matching</p>
-    <h2>Clustered profiles requiring validation</h2>
+    <div>
+      <span class="eyebrow" style="color: var(--cyber-cyan);">IDENTITY MATCHING ENGINE</span>
+      <h2>Profil Sivitas Akademika yang Membutuhkan Validasi & Mitigasi</h2>
+    </div>
   </div>
+
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th>Masked identity</th>
-          <th>Account type</th>
-          <th>Unit</th>
-          <th>Confidence</th>
-          <th>Records</th>
-          <th>Max risk</th>
-          <th>Validation</th>
+          <th>Identitas (Masked Privacy)</th>
+          <th>Klasifikasi Akun</th>
+          <th>Unit / Fakultas</th>
+          <th>Tingkat Keyakinan</th>
+          <th>Jumlah Insiden</th>
+          <th>Skor Risiko Maks</th>
+          <th>Status Validasi</th>
         </tr>
       </thead>
       <tbody>
         {% for profile in profiles %}
           <tr>
-            <td><strong>{{ profile.masked_email|default:profile.masked_username }}</strong></td>
-            <td>{{ profile.account_type }}</td>
+            <td>
+              <strong style="color: #FFFFFF; font-size: 14px;">{{ profile.masked_email|default:profile.masked_username }}</strong>
+            </td>
+            <td>
+              <span class="pill info">{{ profile.get_account_type_display }}</span>
+            </td>
             <td>{{ profile.unit_name }}</td>
-            <td>{{ profile.confidence_score }}</td>
-            <td>{{ profile.exposure_total }}</td>
-            <td><span class="risk high">{{ profile.max_score|default:0 }}</span></td>
-            <td><span class="status">{{ profile.validation_status }}</span></td>
+            <td>
+              <strong style="color: var(--unair-gold);">{{ profile.confidence_score }}%</strong>
+            </td>
+            <td>
+              <strong style="color: #FFFFFF;">{{ profile.exposure_total }}</strong> temuan
+            </td>
+            <td>
+              {% if profile.max_score >= 85 %}
+                <span class="pill critical">CRITICAL ({{ profile.max_score|default:0 }})</span>
+              {% elif profile.max_score >= 70 %}
+                <span class="pill high">HIGH ({{ profile.max_score|default:0 }})</span>
+              {% elif profile.max_score >= 40 %}
+                <span class="pill medium">MEDIUM ({{ profile.max_score|default:0 }})</span>
+              {% else %}
+                <span class="pill low">LOW ({{ profile.max_score|default:0 }})</span>
+              {% endif %}
+            </td>
+            <td>
+              <span class="pill low">{{ profile.get_validation_status_display }}</span>
+            </td>
           </tr>
         {% empty %}
-          <tr><td colspan="7">No identity profiles available.</td></tr>
+          <tr><td colspan="7" style="text-align:center; padding: 40px; color:var(--text-secondary);">Tidak ada profil identitas yang sesuai filter.</td></tr>
         {% endfor %}
       </tbody>
     </table>
