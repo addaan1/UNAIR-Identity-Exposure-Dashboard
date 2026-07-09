@@ -767,7 +767,7 @@ tbody tr:hover td {
 }
 
 .login-panel img {
-  width: 90px !important;
+  width: 150px !important;
   height: auto !important;
   margin-bottom: 24px !important;
   filter: drop-shadow(0 0 15px rgba(255, 197, 11, 0.4)) !important;

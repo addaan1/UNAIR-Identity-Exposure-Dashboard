@@ -48,8 +48,8 @@
       <div class="brand-lockup">
         <img src="{% static 'exposures/img/unair-logo.png' %}" alt="Universitas Airlangga">
         <div class="brand-text">
-          <h2>UNAIR SOC</h2>
-          <span>Cyber Shield</span>
+          <h2>UNAIR</h2>
+          <span>Identity Exposure</span>
         </div>
       </div>
 
@@ -68,26 +68,21 @@
         </a>
         <a href="{% url 'remediation' %}" {% if request.resolver_match.url_name == 'remediation' %}class="active"{% endif %}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          Tindak Lanjut SOC
+          Tindak Lanjut
         </a>
       </nav>
-
-      <div class="sidebar-footer">
-        <span>SECURITY LEVEL</span>
-        <strong>UNAIR DEFENSE PRO</strong>
-      </div>
     </aside>
 
     <!-- ═══════ MAIN WORKSPACE ═══════ -->
     <main class="workspace">
       <header class="topbar">
         <div class="topbar-left">
-          <p class="eyebrow">UNIVERSITAS AIRLANGGA — IDENTITY SECURITY OPERATIONS</p>
+          <p class="eyebrow">UNIVERSITAS AIRLANGGA — IDENTITY EXPOSURE DASHBOARD</p>
           <h1>{% block page_title %}Executive Cyber Dashboard{% endblock %}</h1>
         </div>
         <div class="topbar-actions">
           <a class="btn-action" href="{% url 'export_exposures_csv' %}">
-            <span>⬇</span> Unduh Laporan CSV
+            Unduh Laporan CSV
           </a>
           {% if request.user.is_authenticated %}
             <form method="post" action="{% url 'logout' %}">

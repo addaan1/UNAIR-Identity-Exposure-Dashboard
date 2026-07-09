@@ -49,6 +49,8 @@ class IdentityProfile(models.Model):
     identity_hash = models.CharField(max_length=64, unique=True)
     masked_email = models.CharField(max_length=255, blank=True)
     masked_username = models.CharField(max_length=255, blank=True)
+    full_name = models.CharField(max_length=255, default="-")
+    nim_nip = models.CharField(max_length=100, default="-")
     account_type = models.CharField(
         max_length=32, choices=AccountType.choices, default=AccountType.UNKNOWN
     )

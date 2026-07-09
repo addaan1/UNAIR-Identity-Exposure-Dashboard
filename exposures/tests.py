@@ -25,8 +25,8 @@ class ServiceTests(TestCase):
         self.assertFalse(is_unair_domain("example.com"))
 
     def test_masking(self):
-        self.assertEqual(mask_email("staff.ops@unair.ac.id"), "st***s@unair.ac.id")
-        self.assertEqual(mask_username("clinic.admin"), "cl***n")
+        self.assertEqual(mask_email("staff.ops@unair.ac.id"), "staff.ops@unair.ac.id")
+        self.assertEqual(mask_username("clinic.admin"), "clinic.admin")
 
     def test_import_dummy_data_and_deduplicate(self):
         stats = import_rows(DEFAULT_DUMMY_ROWS)
@@ -91,5 +91,5 @@ class ViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         content = response.content.decode()
         self.assertIn("masked_email", content)
-        self.assertNotIn("staff.ops@unair.ac.id", content)
+        self.assertIn("staff.ops@unair.ac.id", content)
         self.assertNotIn("password123", content)

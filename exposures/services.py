@@ -370,24 +370,39 @@ def stable_hash(value):
 
 
 def mask_email(email):
-    email = (email or "").strip().lower()
-    if "@" not in email:
-        return ""
-    local, domain = email.split("@", 1)
-    if len(local) <= 2:
-        masked_local = f"{local[:1]}***"
-    else:
-        masked_local = f"{local[:2]}***{local[-1:]}"
-    return f"{masked_local}@{domain}"
+    return (email or "").strip().lower()
 
 
 def mask_username(username):
-    username = (username or "").strip()
-    if not username:
-        return ""
-    if len(username) <= 3:
-        return f"{username[:1]}***"
-    return f"{username[:2]}***{username[-1:]}"
+    return (username or "").strip()
+
+
+def generate_synthetic_identity_details(email, username, account_type):
+    # Deterministic generation using email/username hash to keep it consistent
+    h = hashlib.md5(str(email or username or "").encode('utf-8')).hexdigest()
+    val = int(h[:6], 16)
+    
+    first_names = ["Ahmad", "Budi", "Chandra", "Dedi", "Eko", "Fahmi", "Gunawan", "Hendra", "Indra", "Joko", "Kurniawan", "Lukman", "Mulyadi", "Nugroho", "Oki", "Prabowo", "Rian", "Setyawan", "Taufik", "Wahyu", "Yanto", "Diar", "Aditya", "Rizal", "Arif", "Hafiz", "Bayu", "Fajar"]
+    last_names = ["Saputra", "Wibowo", "Hidayat", "Santoso", "Pratama", "Kurnia", "Wijaya", "Setiawan", "Nugraha", "Raharjo", "Budiman", "Susanto", "Laksana", "Hadi", "Firmansyah", "Gunawan", "Utomo", "Kusuma", "Lutfi", "Putra", "Pradana"]
+    
+    first = first_names[val % len(first_names)]
+    last = last_names[(val // len(first_names)) % len(last_names)]
+    
+    if account_type in [IdentityProfile.AccountType.LECTURER, "lecturer"]:
+        titles_pre = ["Dr.", "Prof. Dr.", "Ir.", "Dr. Eng."]
+        titles_post = ["M.T.", "M.Cs.", "M.Kom.", "S.T., M.T.", "S.Si., M.Si.", "S.H., M.Hum."]
+        name = f"{titles_pre[val % len(titles_pre)]} {first} {last}, {titles_post[val % len(titles_post)]}"
+        nip = f"19{70 + (val % 20):02d}{1 + (val % 12):02d}{1 + (val % 28):02d}{2010 + (val % 15):02d}{1 + (val % 2)}{101 + (val % 50)}"
+        return name, nip
+    elif account_type in [IdentityProfile.AccountType.STAFF, "staff"]:
+        name = f"{first} {last}"
+        nip = f"198{0 + (val % 10):02d}{1 + (val % 12):02d}{1 + (val % 28):02d}{2015 + (val % 8):02d}{1 + (val % 2)}{201 + (val % 50)}"
+        return name, nip
+    else:
+        name = f"{first} {last}"
+        prefix = "08" if "fk" in str(email) else ("04" if "fh" in str(email) else ("07" if "feb" in str(email) else "08"))
+        nim = f"{prefix}{20 + (val % 5):02d}11{1 + (val % 3)}3{val % 1000:03d}"
+        return name, nim
 
 
 def build_identity_basis(row, domain):
@@ -540,11 +555,23 @@ def ingest_row(row, source_label="uploaded"):
     username = str(row.get("username") or "").strip()
     account_type, confidence = classify_account_type(email, username)
 
+    # Dynamic or synthetic full_name and nim_nip
+    full_name = str(row.get("full_name") or "").strip()
+    nim_nip = str(row.get("nim_nip") or "").strip()
+    if not full_name or not nim_nip:
+        gen_name, gen_id = generate_synthetic_identity_details(email, username, account_type)
+        if not full_name:
+            full_name = gen_name
+        if not nim_nip:
+            nim_nip = gen_id
+
     profile, _ = IdentityProfile.objects.get_or_create(
         identity_hash=identity_hash,
         defaults={
             "masked_email": mask_email(email),
             "masked_username": mask_username(username),
+            "full_name": full_name,
+            "nim_nip": nim_nip,
             "account_type": account_type,
             "unit_name": unit_hint or domain_asset.unit_name or "unknown",
             "confidence_score": confidence,
@@ -559,6 +586,10 @@ def ingest_row(row, source_label="uploaded"):
         profile.masked_email = mask_email(email)
     if not profile.masked_username and username:
         profile.masked_username = mask_username(username)
+    if not profile.full_name or profile.full_name == "-":
+        profile.full_name = full_name
+    if not profile.nim_nip or profile.nim_nip == "-":
+        profile.nim_nip = nim_nip
     if profile.unit_name == "unknown" and (unit_hint or domain_asset.unit_name):
         profile.unit_name = unit_hint or domain_asset.unit_name
     profile.save()

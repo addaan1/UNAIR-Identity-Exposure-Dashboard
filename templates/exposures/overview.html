@@ -14,10 +14,10 @@
         <span style="color: var(--cyber-cyan);">●</span> 15 Unit Fakultas Terpantau
       </div>
       <div class="hero-badge" style="border-color: var(--unair-gold);">
-        <span style="color: var(--unair-gold);">⚡</span> SLA Remediasi Kritis < 24 Jam
+        <span style="color: var(--unair-gold); font-weight: bold; margin-right: 4px;">SLA</span> SLA Remediasi Kritis &lt; 24 Jam
       </div>
       <div class="hero-badge" style="border-color: #10B981;">
-        <span style="color: #10B981;">🛡️</span> SSO & MFA Shield Aktif
+        <span style="color: #10B981; font-weight: bold; margin-right: 4px;">SEC</span> SSO &amp; MFA Shield Aktif
       </div>
     </div>
   </div>
@@ -33,29 +33,35 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-label">Total Exposure</span>
-      <div class="metric-icon">📊</div>
+      <div class="metric-icon" style="color: var(--cyber-cyan);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
     </div>
     <div class="metric-value">{{ kpis.total_exposures }}</div>
     <div class="metric-trend">
-      <span>▲ Terverifikasi intelijen gelap</span>
+      <span>Terverifikasi intelijen gelap</span>
     </div>
   </div>
 
   <div class="metric-card warning">
     <div class="metric-header">
       <span class="metric-label">Identitas Unik Terdampak</span>
-      <div class="metric-icon">👤</div>
+      <div class="metric-icon" style="color: var(--unair-gold);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
     </div>
     <div class="metric-value">{{ kpis.unique_identities }}</div>
     <div class="metric-trend neutral">
-      <span>Dosen, Staf, & Mahasiswa</span>
+      <span>Dosen, Staf, &amp; Mahasiswa</span>
     </div>
   </div>
 
   <div class="metric-card">
     <div class="metric-header">
-      <span class="metric-label">Subdomain & Web Vital</span>
-      <div class="metric-icon">🌐</div>
+      <span class="metric-label">Subdomain Terpapar</span>
+      <div class="metric-icon" style="color: var(--cyber-cyan);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
     </div>
     <div class="metric-value">{{ kpis.impacted_domains }}</div>
     <div class="metric-trend">
@@ -66,7 +72,9 @@
   <div class="metric-card critical">
     <div class="metric-header">
       <span class="metric-label">Temuan Risiko Tinggi</span>
-      <div class="metric-icon">🔴</div>
+      <div class="metric-icon" style="color: var(--critical);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
     </div>
     <div class="metric-value">{{ kpis.high_risk_count }}</div>
     <div class="metric-trend down">
@@ -76,23 +84,27 @@
 
   <div class="metric-card critical">
     <div class="metric-header">
-      <span class="metric-label">Insiden Kritikal (Immediate)</span>
-      <div class="metric-icon">⚠️</div>
+      <span class="metric-label">Insiden Kritikal</span>
+      <div class="metric-icon" style="color: var(--critical);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
     </div>
     <div class="metric-value">{{ kpis.critical_count }}</div>
     <div class="metric-trend down">
-      <span>Prioritas penanganan SOC</span>
+      <span>Prioritas penanganan segera</span>
     </div>
   </div>
 
   <div class="metric-card success">
     <div class="metric-header">
       <span class="metric-label">Antrean Belum Ditangani</span>
-      <div class="metric-icon">📋</div>
+      <div class="metric-icon" style="color: var(--low);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+      </div>
     </div>
     <div class="metric-value">{{ kpis.unresolved_count }}</div>
     <div class="metric-trend">
-      <span>Proses verifikasi & mitigasi</span>
+      <span>Proses verifikasi &amp; mitigasi</span>
     </div>
   </div>
 </section>
@@ -102,7 +114,7 @@
   <div class="chart-card" style="border-top: 3px solid var(--unair-gold);">
     <div class="chart-header">
       <div>
-        <h3>🎯 Target Keamanan & SLA Goals (2026)</h3>
+        <h3>Target Keamanan &amp; SLA Goals (2026)</h3>
         <p class="chart-subtitle">Capaian aktual (%) dibandingkan target standar keamanan universitas</p>
       </div>
       <span class="pill medium">SLA AUDIT</span>
@@ -196,7 +208,7 @@
   <div class="chart-card" style="justify-content: center; background: linear-gradient(135deg, rgba(15,27,49,0.9), rgba(13,23,42,0.95));">
     <div class="chart-header">
       <div>
-        <span class="eyebrow" style="color: var(--cyber-cyan);">SOC RECOMMENDATIONS</span>
+        <span class="eyebrow" style="color: var(--cyber-cyan);">REKOMENDASI KEAMANAN</span>
         <h3>Rekomendasi Tindakan Cepat (Cyber Hygiene)</h3>
         <p class="chart-subtitle">Langkah mitigasi prioritas untuk menaikkan skor keamanan</p>
       </div>
@@ -222,10 +234,10 @@
 <section class="panel">
   <div class="section-heading">
     <div>
-      <span class="eyebrow" style="color: var(--unair-gold);">ALERTS & DISCOVERIES</span>
-      <h2>Temuan Risiko Tinggi & Kritikal Terbaru</h2>
+      <span class="eyebrow" style="color: var(--unair-gold);">TEMUAN INSIDEN TERBARU</span>
+      <h2>Temuan Risiko Tinggi &amp; Kritikal Terbaru</h2>
     </div>
-    <a href="{% url 'high_risk' %}" class="btn-action">Lihat Seluruh Insiden →</a>
+    <a href="{% url 'high_risk' %}" class="btn-action">Lihat Seluruh Insiden</a>
   </div>
 
   {% if recent_high_risk %}
@@ -234,7 +246,8 @@
         <thead>
           <tr>
             <th>Waktu Deteksi</th>
-            <th>Email / Identitas</th>
+            <th>Nama Lengkap & NIM/NIP</th>
+            <th>Email / Username</th>
             <th>Unit Fakultas</th>
             <th>Domain Terdampak</th>
             <th>Tipe Exposure</th>
@@ -251,8 +264,12 @@
               </span>
             </td>
             <td>
-              <strong style="color: #FFFFFF;">{{ item.email }}</strong>
-              <div style="font-size: 11px; color: var(--text-muted);">{{ item.identity_profile.account_type|default:"user"|upper }}</div>
+              <strong style="color: #FFFFFF; font-size: 14px;">{{ item.identity_profile.full_name }}</strong>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--unair-gold); margin-top: 2px;">{{ item.identity_profile.nim_nip }}</div>
+            </td>
+            <td>
+              <span style="color: var(--text-primary); font-size: 13.5px;">{{ item.email_masked|default:item.username_masked }}</span>
+              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px;">{{ item.identity_profile.get_account_type_display }}</div>
             </td>
             <td>{{ item.identity_profile.unit_name|default:"UNAIR Central" }}</td>
             <td>

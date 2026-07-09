@@ -4,26 +4,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login — UNAIR Identity Exposure Intelligence</title>
+  <title>Masuk — UNAIR Identity Exposure Dashboard</title>
   <link rel="stylesheet" href="{% static 'exposures/css/dashboard.css' %}?v=20260709c">
 </head>
 <body class="login-screen">
   <main class="login-panel">
     <img src="{% static 'exposures/img/unair-logo.png' %}" alt="Universitas Airlangga">
-    <h1>Identity Exposure<br>Intelligence</h1>
-    <p class="login-subtitle">Masuk untuk mengakses dashboard monitoring keamanan identitas Universitas Airlangga.</p>
+    <h1>Identity Exposure<br>Dashboard</h1>
+    <p class="login-subtitle">Masuk untuk mengakses dashboard pemantauan kebocoran kredensial Universitas Airlangga.</p>
     <form method="post">
       {% csrf_token %}
       {% if form.errors %}
         <div class="login-errors">
-          Username atau password salah. Silakan coba lagi.
+          Kredensial salah. Silakan periksa kembali username dan password Anda.
         </div>
       {% endif %}
       <label for="{{ form.username.id_for_label }}">Username</label>
       {{ form.username }}
       <label for="{{ form.password.id_for_label }}">Password</label>
       {{ form.password }}
-      <button type="submit">Masuk →</button>
+      <button type="submit">Masuk</button>
     </form>
   </main>
 </body>

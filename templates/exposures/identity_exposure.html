@@ -6,7 +6,7 @@
 <!-- ═══════ FILTER BAR ═══════ -->
 <section class="filter-bar">
   <form method="get">
-    <input type="search" name="q" value="{{ filters.q }}" placeholder="🔍 Cari identitas, domain, atau unit fakultas...">
+    <input type="search" name="q" value="{{ filters.q }}" placeholder="Cari identitas, domain, atau unit fakultas...">
     <select name="account_type">
       <option value="">Semua Tipe Akun</option>
       {% for value, label in account_types %}
@@ -36,7 +36,9 @@
     <table>
       <thead>
         <tr>
-          <th>Identitas (Masked Privacy)</th>
+          <th>Nama Lengkap</th>
+          <th>NIM / NIP</th>
+          <th>Email / Username</th>
           <th>Klasifikasi Akun</th>
           <th>Unit / Fakultas</th>
           <th>Tingkat Keyakinan</th>
@@ -49,7 +51,13 @@
         {% for profile in profiles %}
           <tr>
             <td>
-              <strong style="color: #FFFFFF; font-size: 14px;">{{ profile.masked_email|default:profile.masked_username }}</strong>
+              <strong style="color: #FFFFFF; font-size: 14.5px;">{{ profile.full_name }}</strong>
+            </td>
+            <td>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-primary);">{{ profile.nim_nip }}</span>
+            </td>
+            <td>
+              <span style="color: var(--cyber-cyan); font-size: 13.5px;">{{ profile.masked_email|default:profile.masked_username }}</span>
             </td>
             <td>
               <span class="pill info">{{ profile.get_account_type_display }}</span>
